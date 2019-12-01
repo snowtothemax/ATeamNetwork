@@ -19,38 +19,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class View extends Application {
+public class View  {
 	// store any command-line arguments that were entered.
 	// NOTE: this.getParameters().getRaw() will get these also
 	private List<String> args;
 
 	private static final int WINDOW_WIDTH = 600;
 	private static final int WINDOW_HEIGHT = 600;
-	private static final String APP_TITLE = "Welcome!";
+	private static String APP_TITLE = "Welcome!";
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// save args example
-		args = this.getParameters().getRaw();
-
-		// Create a vertical box with Hello labels for each args
-		VBox vbox = new VBox();
-		for (String arg : args) {
-			vbox.getChildren().add(new Label("hello " + arg));
-		}
-
-		// Add the stuff and set the primary stage
-		primaryStage.setTitle(APP_TITLE);
-		primaryStage.setScene(getFirstScene());
-		primaryStage.show();
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		launch(args);
-	}
 
 	/**
 	 * Creates the mainSceneBorderPane with functional buttons, etc
@@ -126,4 +103,46 @@ public class View extends Application {
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
+	
+	static Scene centralUserOptions() {
+	  
+	  RunApplication.APP_TITLE = "Welcome to Central User Options!";
+	  
+	  BorderPane root = new BorderPane();
+	  
+	  Button newCntrlUsr = new Button ("Add this central user");
+	  
+	  TextField txtFld = new TextField("  Enter the User you'd like to make the Central User");
+	    
+	  Button display = new Button("Display Network from the View of the Central User");
+	  
+	  HBox top = new HBox();
+	  top.setPrefHeight(WINDOW_HEIGHT/2);
+	  
+	  txtFld.setTranslateX(WINDOW_WIDTH*3/8 -75);
+	  txtFld.setTranslateY(WINDOW_HEIGHT/4 );
+	  txtFld.setPrefWidth(WINDOW_WIDTH/2);
+	  newCntrlUsr.setTranslateX(WINDOW_WIDTH*3/8 -300);
+	  newCntrlUsr.setTranslateY(WINDOW_HEIGHT/4 + 45);
+	  
+	  top.getChildren().addAll(txtFld, newCntrlUsr);
+	  
+	  
+	  root.setTop(top);
+	  
+	 HBox bottom = new HBox();
+	 
+	 bottom.setPrefHeight(WINDOW_HEIGHT/2);
+	 
+	 display.setTranslateX(WINDOW_WIDTH/2-140);
+	 
+	 
+	 bottom.getChildren().add(display);
+	 root.setBottom(bottom);
+	  
+	  return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
+
+
+	
 }
