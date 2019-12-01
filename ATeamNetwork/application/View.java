@@ -32,7 +32,7 @@ public class View  {
 	/**
 	 * Creates the mainSceneBorderPane with functional buttons, etc
 	 */
-	private static Scene getFirstScene() {
+	static Scene getFirstScene() {
 
 		// Main BorderPane for the login screen
 		BorderPane root = new BorderPane();
@@ -182,6 +182,33 @@ public class View  {
 	  
 	  return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
+	
+	static Scene ExportFile() {
+	  
+	  RunApplication.APP_TITLE = "Welcome to Export File!";
+	  
+	  Button exp = new Button("Export to File");
+	  
+	  TextField txt = new TextField("Enter the exact path of the file you'd like to export to");
+	  
+	  BorderPane root = new BorderPane();
+	
+	  HBox h = new HBox();
+	  h.setPrefHeight(WINDOW_HEIGHT/2);
+	  
+	  txt.setPrefWidth(450);
+	  
+	  txt.setTranslateX(WINDOW_WIDTH/2 - 225);
+	  txt.setTranslateY(WINDOW_HEIGHT/2 - 30);
+	  exp.setTranslateY(WINDOW_HEIGHT/2);
+	  exp.setTranslateX(WINDOW_WIDTH/2 - 475);
+	  
+	  h.getChildren().addAll(txt, exp);
+	  
+	  root.setTop(h);
+	
+	  return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+    }
 
 
 	
