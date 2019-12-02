@@ -179,33 +179,33 @@ public class View {
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
-	
+
 	static Scene ExportFile() {
-	  
-	  RunApplication.APP_TITLE = "Welcome to Export File!";
-	  
-	  Button exp = new Button("Export to File");
-	  
-	  TextField txt = new TextField("Enter the exact path of the file you'd like to export to");
-	  
-	  BorderPane root = new BorderPane();
-	
-	  HBox h = new HBox();
-	  h.setPrefHeight(WINDOW_HEIGHT/2);
-	  
-	  txt.setPrefWidth(450);
-	  
-	  txt.setTranslateX(WINDOW_WIDTH/2 - 225);
-	  txt.setTranslateY(WINDOW_HEIGHT/2 - 30);
-	  exp.setTranslateY(WINDOW_HEIGHT/2);
-	  exp.setTranslateX(WINDOW_WIDTH/2 - 475);
-	  
-	  h.getChildren().addAll(txt, exp);
-	  
-	  root.setTop(h);
-	
-	  return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-    }
+
+		RunApplication.APP_TITLE = "Welcome to Export File!";
+
+		Button exp = new Button("Export to File");
+
+		TextField txt = new TextField("Enter the exact path of the file you'd like to export to");
+
+		BorderPane root = new BorderPane();
+
+		HBox h = new HBox();
+		h.setPrefHeight(WINDOW_HEIGHT / 2);
+
+		txt.setPrefWidth(450);
+
+		txt.setTranslateX(WINDOW_WIDTH / 2 - 225);
+		txt.setTranslateY(WINDOW_HEIGHT / 2 - 30);
+		exp.setTranslateY(WINDOW_HEIGHT / 2);
+		exp.setTranslateX(WINDOW_WIDTH / 2 - 475);
+
+		h.getChildren().addAll(txt, exp);
+
+		root.setTop(h);
+
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
 
 	/**
 	 * The Scene that is shown when the uploadNetworkFile button is pressed
@@ -218,10 +218,10 @@ public class View {
 
 		// Creates a root BorderPane object to be used as the background of the scene
 		BorderPane root = new BorderPane();
-		
-		//creates a spacing that centers the center Vbox Pane
+
+		// creates a spacing that centers the center Vbox Pane
 		HBox space = new HBox();
-		space.setPrefHeight(WINDOW_HEIGHT/4);
+		space.setPrefHeight(WINDOW_HEIGHT / 4);
 
 		// creates a new VBox that will be used to stack the nodes of the Scene
 		VBox box = new VBox();
@@ -230,25 +230,67 @@ public class View {
 
 		// Sets the spacing of nodes in the VBox
 		box.setSpacing(WINDOW_HEIGHT / 8);
-		box.setPrefHeight(WINDOW_HEIGHT/2);
+		box.setPrefHeight(WINDOW_HEIGHT / 2);
 
 		// Creates a new label explaining the use of the textField and what needs to be
 		// put in the textfield in order to upload a file correctly.
 		Label instruc = new Label("Please type in the address of the network file (.JSON) to upload.");
-		instruc.setTranslateX(WINDOW_WIDTH/4);
+		instruc.setTranslateX(WINDOW_WIDTH / 4);
 
 		// Creates a new TextField to be used input the address of the network file.
 		TextField address = new TextField("Insert Adress Here...");
-		address.setMaxWidth(WINDOW_WIDTH/3);
-		address.setTranslateX(WINDOW_WIDTH/3);
+		address.setMaxWidth(WINDOW_WIDTH / 3);
+		address.setTranslateX(WINDOW_WIDTH / 3);
 
 		// creates the button to finish the task of uploading the network file.
 		Button upload = new Button("Upload File");
-		upload.setTranslateX(WINDOW_WIDTH*3/8);
-		
+		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
+
 		box.getChildren().addAll(instruc, address, upload);
-		
+
 		return new Scene(root, WINDOW_HEIGHT, WINDOW_WIDTH);
 	}
+	
+	static Scene addUser() {
+
+	    RunApplication.APP_TITLE = "Welcome to Adding New Users!";
+
+	    TextField txt = new TextField("Enter the name of the User you'd like to Add");
+	    Label label = new Label(
+	        "The names may contain any letters {A-Z}, space, digits {0-9}, underscore {_}, or apostrophe {'}");
+
+	    BorderPane root = new BorderPane();
+	    Button done = new Button("ADD");
+
+	    HBox h = new HBox();
+	   
+	    VBox V = new VBox();
+	   
+	    h.setPrefHeight(WINDOW_HEIGHT/4 );
+	    h.setPrefWidth(WINDOW_WIDTH);
+	    V.setPrefWidth(WINDOW_WIDTH/3);
+	    V.setPrefHeight(WINDOW_HEIGHT/4);
+	   
+	    label.setPrefWidth(WINDOW_WIDTH);
+	    label.setTranslateY(WINDOW_HEIGHT/6);
+	    label.setTranslateX(0);
+	   
+	    txt.setPrefWidth(WINDOW_WIDTH/8);
+
+	    txt.setTranslateX(0);
+	    txt.setTranslateY(WINDOW_HEIGHT / 8);
+	    done.setTranslateY(WINDOW_HEIGHT / 8);
+	    done.setTranslateX(WINDOW_WIDTH / 2);
+
+
+	    h.getChildren().addAll(label);
+	    V.getChildren().addAll(txt, done);
+
+	    root.setTop(h);
+	    root.setCenter(V);
+	   
+	    return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	  }
 
 }
