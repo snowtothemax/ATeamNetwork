@@ -41,7 +41,7 @@ public class RunApplication extends Application {
 
         // Add the stuff and set the primary stage
         
-        primaryStage.setScene(View.centralUserOptions());
+        primaryStage.setScene(View.uploadNetworkFile());
         primaryStage.setTitle(APP_TITLE);
         primaryStage.show();
     }

@@ -19,7 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class View  {
+public class View {
 	// store any command-line arguments that were entered.
 	// NOTE: this.getParameters().getRaw() will get these also
 	private List<String> args;
@@ -28,11 +28,10 @@ public class View  {
 	private static final int WINDOW_HEIGHT = 600;
 	private static String APP_TITLE = "Welcome!";
 
-
 	/**
 	 * Creates the mainSceneBorderPane with functional buttons, etc
 	 */
-	private static Scene getFirstScene() {
+	static Scene getFirstScene() {
 
 		// Main BorderPane for the login screen
 		BorderPane root = new BorderPane();
@@ -46,7 +45,7 @@ public class View  {
 		Button ctrlUsrOp = new Button("Central User Options");
 
 		// sets the position of the button ctrlUsrOp
-		ctrlUsrOp.setTranslateX(WINDOW_WIDTH*5/12);
+		ctrlUsrOp.setTranslateX(WINDOW_WIDTH * 5 / 12);
 		ctrlUsrOp.setTranslateY(WINDOW_HEIGHT / 12);
 		top.getChildren().add(ctrlUsrOp);
 
@@ -70,18 +69,16 @@ public class View  {
 
 		// Adds all the above nodes to the VBox "left" and also positions them to their
 		// correct areas on the screen
-		//Translates the uploadNtwrkFile button to its position in the screen
-		uploadNtwrkFile.setTranslateX(WINDOW_WIDTH/5);
-		
-		//Translates the addNewUser button to its correct position on the screen
-		addNewUser.setTranslateX(WINDOW_WIDTH/5);
-		addNewUser.setTranslateY(WINDOW_HEIGHT/10);
-		
-		//Translates the user1 TextField to its correct position on the screen
-		user1.setTranslateY(WINDOW_HEIGHT/4);
+		// Translates the uploadNtwrkFile button to its position in the screen
+		uploadNtwrkFile.setTranslateX(WINDOW_WIDTH / 5);
+
+		// Translates the addNewUser button to its correct position on the screen
+		addNewUser.setTranslateX(WINDOW_WIDTH / 5);
+		addNewUser.setTranslateY(WINDOW_HEIGHT / 10);
+
+		// Translates the user1 TextField to its correct position on the screen
+		user1.setTranslateY(WINDOW_HEIGHT / 4);
 		left.getChildren().addAll(uploadNtwrkFile, addNewUser, user1);
-		
-		
 
 		// Buttons to be added to the right side of the scene.
 		Button exportNtwrkFile = new Button("Export Network File");
@@ -92,45 +89,42 @@ public class View  {
 		// between the two or removing a friendship between the two (If they exist of
 		// course).
 		TextField user2 = new TextField("Enter User 2...");
-		
-		
-		
-		//Positions the above buttons to their correct positions on the screen
-		
-		//Positions the exportNtwrkFile button
-		exportNtwrkFile.setTranslateX(WINDOW_WIDTH/8);
-		
-		//Positons the viewNetwork button
-		viewNetwork.setTranslateX(WINDOW_WIDTH/8);
-		viewNetwork.setTranslateY(WINDOW_HEIGHT/10);
-		
-		//positions the user2 TextField to its correct position
-		user2.setTranslateY(WINDOW_HEIGHT/4);
-		
+
+		// Positions the above buttons to their correct positions on the screen
+
+		// Positions the exportNtwrkFile button
+		exportNtwrkFile.setTranslateX(WINDOW_WIDTH / 8);
+
+		// Positons the viewNetwork button
+		viewNetwork.setTranslateX(WINDOW_WIDTH / 8);
+		viewNetwork.setTranslateY(WINDOW_HEIGHT / 10);
+
+		// positions the user2 TextField to its correct position
+		user2.setTranslateY(WINDOW_HEIGHT / 4);
+
 		// adds correct nodes to each vbox.
 		right.getChildren().addAll(exportNtwrkFile, viewNetwork, user2);
-		
-		
 
 		// The box to be set as the bottom of the screen.
 		VBox bottom = new VBox();
-		bottom.setPrefHeight(WINDOW_HEIGHT/4);
+		bottom.setPrefHeight(WINDOW_HEIGHT / 4);
 		bottom.setSpacing(30);
-		
+
 		// Buttons to be added to the HBox "bottom"
 		Button addFriend = new Button("Add Friendship");// When functional, this should add an edge between both
 														// friends input in the textFields user1 and user2
 		Button removeFriend = new Button("Remove Friendship");// ^^ but remove the friendship
 
-		//Positions the bottom buttons correctly onto the scene
-		
-		//Sets the addFriend button to the center of the screen
-		addFriend.setTranslateX(WINDOW_WIDTH*5/12);
-		
-		//sets the removeFriend button to the center of the screen but below the addFriend button
-		removeFriend.setTranslateX(WINDOW_WIDTH*5/12);
-		//removeFriend.setTranslateY(WINDOW_HEIGHT/4);
-		
+		// Positions the bottom buttons correctly onto the scene
+
+		// Sets the addFriend button to the center of the screen
+		addFriend.setTranslateX(WINDOW_WIDTH * 5 / 12);
+
+		// sets the removeFriend button to the center of the screen but below the
+		// addFriend button
+		removeFriend.setTranslateX(WINDOW_WIDTH * 5 / 12);
+		// removeFriend.setTranslateY(WINDOW_HEIGHT/4);
+
 		// adds the buttons to the HBox bottom.
 		bottom.getChildren().addAll(addFriend, removeFriend);
 
@@ -143,46 +137,91 @@ public class View  {
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
-	
+
+	/**
+	 * The scene that is accessed when the button "Central User Options" is pressed.
+	 * 
+	 * @return Scene - The scene for Central User Options
+	 */
 	static Scene centralUserOptions() {
-	  
-	  RunApplication.APP_TITLE = "Welcome to Central User Options!";
-	  
-	  BorderPane root = new BorderPane();
-	  
-	  Button newCntrlUsr = new Button ("Add this central user");
-	  
-	  TextField txtFld = new TextField("  Enter the User you'd like to make the Central User");
-	    
-	  Button display = new Button("Display Network from the View of the Central User");
-	  
-	  HBox top = new HBox();
-	  top.setPrefHeight(WINDOW_HEIGHT/2);
-	  
-	  txtFld.setTranslateX(WINDOW_WIDTH*3/8 -75);
-	  txtFld.setTranslateY(WINDOW_HEIGHT/4 );
-	  txtFld.setPrefWidth(WINDOW_WIDTH/2);
-	  newCntrlUsr.setTranslateX(WINDOW_WIDTH*3/8 -300);
-	  newCntrlUsr.setTranslateY(WINDOW_HEIGHT/4 + 45);
-	  
-	  top.getChildren().addAll(txtFld, newCntrlUsr);
-	  
-	  
-	  root.setTop(top);
-	  
-	 HBox bottom = new HBox();
-	 
-	 bottom.setPrefHeight(WINDOW_HEIGHT/2);
-	 
-	 display.setTranslateX(WINDOW_WIDTH/2-140);
-	 
-	 
-	 bottom.getChildren().add(display);
-	 root.setBottom(bottom);
-	  
-	  return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+		RunApplication.APP_TITLE = "Welcome to Central User Options!";
+
+		BorderPane root = new BorderPane();
+
+		Button newCntrlUsr = new Button("Add this central user");
+
+		TextField txtFld = new TextField("  Enter the User you'd like to make the Central User");
+
+		Button display = new Button("Display Network from the View of the Central User");
+
+		HBox top = new HBox();
+		top.setPrefHeight(WINDOW_HEIGHT / 2);
+
+		txtFld.setTranslateX(WINDOW_WIDTH * 3 / 8 - 75);
+		txtFld.setTranslateY(WINDOW_HEIGHT / 4);
+		txtFld.setPrefWidth(WINDOW_WIDTH / 2);
+		newCntrlUsr.setTranslateX(WINDOW_WIDTH * 3 / 8 - 300);
+		newCntrlUsr.setTranslateY(WINDOW_HEIGHT / 4 + 45);
+
+		top.getChildren().addAll(txtFld, newCntrlUsr);
+
+		root.setTop(top);
+
+		HBox bottom = new HBox();
+
+		bottom.setPrefHeight(WINDOW_HEIGHT / 2);
+
+		display.setTranslateX(WINDOW_WIDTH / 2 - 140);
+
+		bottom.getChildren().add(display);
+		root.setBottom(bottom);
+
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
+	/**
+	 * The Scene that is shown when the uploadNetworkFile button is pressed
+	 * 
+	 * @return
+	 */
+	static Scene uploadNetworkFile() {
+		// Sets the title of the scene to a new string
+		RunApplication.APP_TITLE = "Upload Network File";
 
-	
+		// Creates a root BorderPane object to be used as the background of the scene
+		BorderPane root = new BorderPane();
+		
+		//creates a spacing that centers the center Vbox Pane
+		HBox space = new HBox();
+		space.setPrefHeight(WINDOW_HEIGHT/4);
+
+		// creates a new VBox that will be used to stack the nodes of the Scene
+		VBox box = new VBox();
+		root.setCenter(box);
+		root.setTop(space);
+
+		// Sets the spacing of nodes in the VBox
+		box.setSpacing(WINDOW_HEIGHT / 8);
+		box.setPrefHeight(WINDOW_HEIGHT/2);
+
+		// Creates a new label explaining the use of the textField and what needs to be
+		// put in the textfield in order to upload a file correctly.
+		Label instruc = new Label("Please type in the address of the network file (.JSON) to upload.");
+		instruc.setTranslateX(WINDOW_WIDTH/4);
+
+		// Creates a new TextField to be used input the address of the network file.
+		TextField address = new TextField("Insert Adress Here...");
+		address.setMaxWidth(WINDOW_WIDTH/3);
+		address.setTranslateX(WINDOW_WIDTH/3);
+
+		// creates the button to finish the task of uploading the network file.
+		Button upload = new Button("Upload File");
+		upload.setTranslateX(WINDOW_WIDTH*3/8);
+		
+		box.getChildren().addAll(instruc, address, upload);
+		
+		return new Scene(root, WINDOW_HEIGHT, WINDOW_WIDTH);
+	}
+
 }
