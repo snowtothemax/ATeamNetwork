@@ -1,6 +1,7 @@
 package application;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javafx.application.Application;
@@ -28,7 +29,7 @@ public class RunApplication extends Application {
 
 	private static final int WINDOW_WIDTH = 600;
 	private static final int WINDOW_HEIGHT = 600;
-	private static String APP_TITLE = "Welcome!";
+	static String APP_TITLE = "Welcome!";
 
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle(APP_TITLE);
@@ -88,7 +89,14 @@ public class RunApplication extends Application {
 		Button exportNtwrkFile = new Button("Export Network File");
 		exportNtwrkFile.setOnAction(e -> primaryStage.setScene(RunApplication.ExportFile()));
 		Button viewNetwork = new Button("View Network");
-		viewNetwork.setOnAction(e -> Driver.printNetwork());
+		
+		viewNetwork.setOnAction(e -> {
+			try {
+				primaryStage.setScene(RunApplication.viewNetwork());
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+		});
 
 		// TextField to be added to the right side of the scene. This input and the
 		// input from "user1" will have the option of either adding a friendship
@@ -306,6 +314,34 @@ public class RunApplication extends Application {
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+	}
+	
+	/**
+	 * Scene that views the whole Network of users, using lines to indicated
+	 * friendships
+	 * 
+	 * @return
+	 * @throws FileNotFoundException 
+	 */
+	static Scene viewNetwork() throws FileNotFoundException {
+
+		// Sets the title of the Scene
+		RunApplication.APP_TITLE = "Welcome to the Network!";
+
+		// For now, we are just using an image to represent what this network will look
+		// like because in order to actually view the network, there has to be backend
+		// functionality.
+		FileInputStream input = new FileInputStream("C:\\Users\\front\\Documents\\CompSci\\CS400\\ATeamNetwork\\application\\NetworkExample.png");
+		Image img = new Image(input);
+		ImageView image = new ImageView(img);
+		
+		//creates a new BorderPane
+		BorderPane root = new BorderPane();
+		
+		//adds the image to the BorderPane
+		root.setCenter(image);
+		
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
 	public static void main(String[] args) {

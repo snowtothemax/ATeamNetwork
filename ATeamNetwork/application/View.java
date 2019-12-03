@@ -1,11 +1,13 @@
 package application;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -250,47 +252,74 @@ public class View {
 
 		return new Scene(root, WINDOW_HEIGHT, WINDOW_WIDTH);
 	}
-	
+
 	static Scene addUser() {
 
-	    RunApplication.APP_TITLE = "Welcome to Adding New Users!";
+		RunApplication.APP_TITLE = "Welcome to Adding New Users!";
 
-	    TextField txt = new TextField("Enter the name of the User you'd like to Add");
-	    Label label = new Label(
-	        "The names may contain any letters {A-Z}, space, digits {0-9}, underscore {_}, or apostrophe {'}");
+		TextField txt = new TextField("Enter the name of the User you'd like to Add");
+		Label label = new Label(
+				"The names may contain any letters {A-Z}, space, digits {0-9}, underscore {_}, or apostrophe {'}");
 
-	    BorderPane root = new BorderPane();
-	    Button done = new Button("ADD");
+		BorderPane root = new BorderPane();
+		Button done = new Button("ADD");
 
-	    HBox h = new HBox();
-	   
-	    VBox V = new VBox();
-	   
-	    h.setPrefHeight(WINDOW_HEIGHT/4 );
-	    h.setPrefWidth(WINDOW_WIDTH);
-	    V.setPrefWidth(WINDOW_WIDTH/3);
-	    V.setPrefHeight(WINDOW_HEIGHT/4);
-	   
-	    label.setPrefWidth(WINDOW_WIDTH);
-	    label.setTranslateY(WINDOW_HEIGHT/6);
-	    label.setTranslateX(0);
-	   
-	    txt.setPrefWidth(WINDOW_WIDTH/8);
+		HBox h = new HBox();
 
-	    txt.setTranslateX(0);
-	    txt.setTranslateY(WINDOW_HEIGHT / 8);
-	    done.setTranslateY(WINDOW_HEIGHT / 8);
-	    done.setTranslateX(WINDOW_WIDTH / 2);
+		VBox V = new VBox();
 
+		h.setPrefHeight(WINDOW_HEIGHT / 4);
+		h.setPrefWidth(WINDOW_WIDTH);
+		V.setPrefWidth(WINDOW_WIDTH / 3);
+		V.setPrefHeight(WINDOW_HEIGHT / 4);
 
-	    h.getChildren().addAll(label);
-	    V.getChildren().addAll(txt, done);
+		label.setPrefWidth(WINDOW_WIDTH);
+		label.setTranslateY(WINDOW_HEIGHT / 6);
+		label.setTranslateX(0);
 
-	    root.setTop(h);
-	    root.setCenter(V);
-	   
-	    return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+		txt.setPrefWidth(WINDOW_WIDTH / 8);
 
-	  }
+		txt.setTranslateX(0);
+		txt.setTranslateY(WINDOW_HEIGHT / 8);
+		done.setTranslateY(WINDOW_HEIGHT / 8);
+		done.setTranslateX(WINDOW_WIDTH / 2);
+
+		h.getChildren().addAll(label);
+		V.getChildren().addAll(txt, done);
+
+		root.setTop(h);
+		root.setCenter(V);
+
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	}
+
+	/**
+	 * Scene that views the whole Network of users, using lines to indicated
+	 * friendships
+	 * 
+	 * @return
+	 * @throws FileNotFoundException 
+	 */
+	static Scene viewNetwork() throws FileNotFoundException {
+
+		// Sets the title of the Scene
+		RunApplication.APP_TITLE = "Welcome to the Network!";
+
+		// For now, we are just using an image to represent what this network will look
+		// like because in order to actually view the network, there has to be backend
+		// functionality.
+		FileInputStream input = new FileInputStream("C:\\Users\\front\\Documents\\CompSci\\CS400\\ATeamNetwork\\application\\NetworkExample.png");
+		Image img = new Image(input);
+		ImageView image = new ImageView(img);
+		
+		//creates a new BorderPane
+		BorderPane root = new BorderPane();
+		
+		//adds the image to the BorderPane
+		root.setCenter(image);
+		
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
 
 }
