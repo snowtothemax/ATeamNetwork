@@ -232,6 +232,7 @@ public class RunApplication extends Application {
 
 		Button back = new Button("Back");
 		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
 
 		root.setBottom(back);
 
@@ -282,6 +283,7 @@ public class RunApplication extends Application {
 
 		Button back = new Button("Back");
 		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
 		root.setBottom(back);
 
 		return new Scene(root, WINDOW_HEIGHT, WINDOW_WIDTH);
@@ -302,6 +304,7 @@ public class RunApplication extends Application {
 
 		Button back = new Button("Back");
 		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
 
 		HBox h = new HBox();
 		VBox V = new VBox();
