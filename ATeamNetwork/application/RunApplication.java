@@ -157,7 +157,7 @@ public class RunApplication extends Application {
 	static Scene centralUserOptions() {
 
 		APP_TITLE = "Welcome to Central User Options!";
-
+		primaryStage.setTitle(APP_TITLE);
 		BorderPane root = new BorderPane();
 
 		TextField txtFld = new TextField("  Enter the User you'd like to make the Central User");
@@ -208,7 +208,7 @@ public class RunApplication extends Application {
 	static Scene ExportFile() {
 
 		APP_TITLE = "Welcome to Export File!";
-
+		primaryStage.setTitle(APP_TITLE);
 		Button exp = new Button("Export to File");
 		exp.setOnAction(e -> Controller.exportFile());
 
@@ -247,7 +247,7 @@ public class RunApplication extends Application {
 	static Scene uploadNetworkFile() {
 		// Sets the title of the scene to a new string
 		APP_TITLE = "Upload Network File";
-
+		primaryStage.setTitle(APP_TITLE);
 		// Creates a root BorderPane object to be used as the background of the scene
 		BorderPane root = new BorderPane();
 
@@ -292,7 +292,7 @@ public class RunApplication extends Application {
 	static Scene addUser() {
 
 		APP_TITLE = "Welcome to Adding New Users!";
-
+		primaryStage.setTitle(APP_TITLE);
 		TextField txt = new TextField("Enter the name of the User you'd like to Add");
 		Label label = new Label(
 				"The names may contain any letters {A-Z}, space, digits {0-9}, underscore {_}, or apostrophe {'}");
