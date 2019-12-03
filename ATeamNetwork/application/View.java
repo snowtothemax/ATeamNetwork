@@ -20,239 +20,277 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class View {
-  // store any command-line arguments that were entered.
-  // NOTE: this.getParameters().getRaw() will get these also
-  private List<String> args;
+	// store any command-line arguments that were entered.
+	// NOTE: this.getParameters().getRaw() will get these also
+	private List<String> args;
+
+	private static final int WINDOW_WIDTH = 600;
+	private static final int WINDOW_HEIGHT = 600;
+	private static String APP_TITLE = "Welcome!";
+
+	/**
+	 * Creates the mainSceneBorderPane with functional buttons, etc
+	 */
+	static Scene getFirstScene() {
+
+		// Main BorderPane for the login screen
+		BorderPane root = new BorderPane();
+
+		// Horizontal box to be but at the top of the application
+		HBox top = new HBox();
+		top.setPrefHeight(WINDOW_HEIGHT / 4);
+
+		// Creates a Button that goes in the top center of the application for Central
+		// User Options
+		Button ctrlUsrOp = new Button("Central User Options");
+
+		// sets the position of the button ctrlUsrOp
+		ctrlUsrOp.setTranslateX(WINDOW_WIDTH * 5 / 12);
+		ctrlUsrOp.setTranslateY(WINDOW_HEIGHT / 12);
+		top.getChildren().add(ctrlUsrOp);
+
+		// sets the Hbox "top" to the top of the main BoderPane
+		root.setTop(top);
 
-  private static final int WINDOW_WIDTH = 600;
-  private static final int WINDOW_HEIGHT = 600;
-  private static String APP_TITLE = "Welcome!";
+		// creates a Vbox for both the left and right sides of the screen
+		VBox left = new VBox();
+		VBox right = new VBox();
+		left.setPrefHeight(WINDOW_HEIGHT / 2);
+		left.setPrefWidth(WINDOW_WIDTH / 2);
+		right.setPrefHeight(WINDOW_HEIGHT / 2);
+		right.setPrefWidth(WINDOW_WIDTH / 2);
 
+		// Buttons to be added to the left side of the scene
+		Button uploadNtwrkFile = new Button("Upload Network File");// used to upload network files
+		Button addNewUser = new Button("Add New User"); // used to add a new user
 
-  /**
-   * Creates the mainSceneBorderPane with functional buttons, etc
-   */
-  static Scene getFirstScene() {
+		// TextField to be added to the left side of the scene.
+		TextField user1 = new TextField("Enter User 1...");
 
-    // Main BorderPane for the login screen
-    BorderPane root = new BorderPane();
+		// Adds all the above nodes to the VBox "left" and also positions them to their
+		// correct areas on the screen
+		// Translates the uploadNtwrkFile button to its position in the screen
+		uploadNtwrkFile.setTranslateX(WINDOW_WIDTH / 5);
 
-    // Horizontal box to be but at the top of the application
-    HBox top = new HBox();
-    top.setPrefHeight(WINDOW_HEIGHT / 4);
+		// Translates the addNewUser button to its correct position on the screen
+		addNewUser.setTranslateX(WINDOW_WIDTH / 5);
+		addNewUser.setTranslateY(WINDOW_HEIGHT / 10);
 
-    // Creates a Button that goes in the top center of the application for Central
-    // User Options
-    Button ctrlUsrOp = new Button("Central User Options");
+		// Translates the user1 TextField to its correct position on the screen
+		user1.setTranslateY(WINDOW_HEIGHT / 4);
+		left.getChildren().addAll(uploadNtwrkFile, addNewUser, user1);
 
-    // sets the position of the button ctrlUsrOp
-    ctrlUsrOp.setTranslateX(WINDOW_WIDTH * 5 / 12);
-    ctrlUsrOp.setTranslateY(WINDOW_HEIGHT / 12);
-    top.getChildren().add(ctrlUsrOp);
+		// Buttons to be added to the right side of the scene.
+		Button exportNtwrkFile = new Button("Export Network File");
+		Button viewNetwork = new Button("View Network");
 
-    // sets the Hbox "top" to the top of the main BoderPane
-    root.setTop(top);
+		// TextField to be added to the right side of the scene. This input and the
+		// input from "user1" will have the option of either adding a friendship
+		// between the two or removing a friendship between the two (If they exist of
+		// course).
+		TextField user2 = new TextField("Enter User 2...");
 
-    // creates a Vbox for both the left and right sides of the screen
-    VBox left = new VBox();
-    VBox right = new VBox();
-    left.setPrefHeight(WINDOW_HEIGHT / 2);
-    left.setPrefWidth(WINDOW_WIDTH / 2);
-    right.setPrefHeight(WINDOW_HEIGHT / 2);
-    right.setPrefWidth(WINDOW_WIDTH / 2);
+		// Positions the above buttons to their correct positions on the screen
 
-    // Buttons to be added to the left side of the scene
-    Button uploadNtwrkFile = new Button("Upload Network File");// used to upload network files
-    Button addNewUser = new Button("Add New User"); // used to add a new user
+		// Positions the exportNtwrkFile button
+		exportNtwrkFile.setTranslateX(WINDOW_WIDTH / 8);
 
-    // TextField to be added to the left side of the scene.
-    TextField user1 = new TextField("Enter User 1...");
+		// Positons the viewNetwork button
+		viewNetwork.setTranslateX(WINDOW_WIDTH / 8);
+		viewNetwork.setTranslateY(WINDOW_HEIGHT / 10);
 
-    // Adds all the above nodes to the VBox "left" and also positions them to their
-    // correct areas on the screen
-    // Translates the uploadNtwrkFile button to its position in the screen
-    uploadNtwrkFile.setTranslateX(WINDOW_WIDTH / 5);
+		// positions the user2 TextField to its correct position
+		user2.setTranslateY(WINDOW_HEIGHT / 4);
 
-    // Translates the addNewUser button to its correct position on the screen
-    addNewUser.setTranslateX(WINDOW_WIDTH / 5);
-    addNewUser.setTranslateY(WINDOW_HEIGHT / 10);
+		// adds correct nodes to each vbox.
+		right.getChildren().addAll(exportNtwrkFile, viewNetwork, user2);
 
-    // Translates the user1 TextField to its correct position on the screen
-    user1.setTranslateY(WINDOW_HEIGHT / 4);
-    left.getChildren().addAll(uploadNtwrkFile, addNewUser, user1);
+		// The box to be set as the bottom of the screen.
+		VBox bottom = new VBox();
+		bottom.setPrefHeight(WINDOW_HEIGHT / 4);
+		bottom.setSpacing(30);
 
+		// Buttons to be added to the HBox "bottom"
+		Button addFriend = new Button("Add Friendship");// When functional, this should add an edge between both
+														// friends input in the textFields user1 and user2
+		Button removeFriend = new Button("Remove Friendship");// ^^ but remove the friendship
 
+		// Positions the bottom buttons correctly onto the scene
 
-    // Buttons to be added to the right side of the scene.
-    Button exportNtwrkFile = new Button("Export Network File");
-    Button viewNetwork = new Button("View Network");
+		// Sets the addFriend button to the center of the screen
+		addFriend.setTranslateX(WINDOW_WIDTH * 5 / 12);
 
-    // TextField to be added to the right side of the scene. This input and the
-    // input from "user1" will have the option of either adding a friendship
-    // between the two or removing a friendship between the two (If they exist of
-    // course).
-    TextField user2 = new TextField("Enter User 2...");
+		// sets the removeFriend button to the center of the screen but below the
+		// addFriend button
+		removeFriend.setTranslateX(WINDOW_WIDTH * 5 / 12);
+		// removeFriend.setTranslateY(WINDOW_HEIGHT/4);
 
+		// adds the buttons to the HBox bottom.
+		bottom.getChildren().addAll(addFriend, removeFriend);
 
+		// Aligns all the boxes to their specified regions in the Main BorderPane
+		// "root".
+		root.setTop(top);
+		root.setLeft(left);
+		root.setRight(right);
+		root.setBottom(bottom);
 
-    // Positions the above buttons to their correct positions on the screen
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
 
-    // Positions the exportNtwrkFile button
-    exportNtwrkFile.setTranslateX(WINDOW_WIDTH / 8);
+	/**
+	 * The scene that is accessed when the button "Central User Options" is pressed.
+	 *
+	 * @return Scene - The scene for Central User Options
+	 */
+	static Scene centralUserOptions() {
 
-    // Positons the viewNetwork button
-    viewNetwork.setTranslateX(WINDOW_WIDTH / 8);
-    viewNetwork.setTranslateY(WINDOW_HEIGHT / 10);
+		RunApplication.APP_TITLE = "Welcome to Central User Options!";
 
-    // positions the user2 TextField to its correct position
-    user2.setTranslateY(WINDOW_HEIGHT / 4);
+		BorderPane root = new BorderPane();
 
-    // adds correct nodes to each vbox.
-    right.getChildren().addAll(exportNtwrkFile, viewNetwork, user2);
+		Button newCntrlUsr = new Button("Add this central user");
 
+		TextField txtFld = new TextField("  Enter the User you'd like to make the Central User");
 
+		Button display = new Button("Display Network from the View of the Central User");
 
-    // The box to be set as the bottom of the screen.
-    VBox bottom = new VBox();
-    bottom.setPrefHeight(WINDOW_HEIGHT / 4);
-    bottom.setSpacing(30);
+		HBox top = new HBox();
+		top.setPrefHeight(WINDOW_HEIGHT / 2);
 
-    // Buttons to be added to the HBox "bottom"
-    Button addFriend = new Button("Add Friendship");// When functional, this should add an edge
-                                                    // between both
-                                                    // friends input in the textFields user1 and
-                                                    // user2
-    Button removeFriend = new Button("Remove Friendship");// ^^ but remove the friendship
+		txtFld.setTranslateX(WINDOW_WIDTH * 3 / 8 - 75);
+		txtFld.setTranslateY(WINDOW_HEIGHT / 4);
+		txtFld.setPrefWidth(WINDOW_WIDTH / 2);
+		newCntrlUsr.setTranslateX(WINDOW_WIDTH * 3 / 8 - 300);
+		newCntrlUsr.setTranslateY(WINDOW_HEIGHT / 4 + 45);
 
-    // Positions the bottom buttons correctly onto the scene
+		top.getChildren().addAll(txtFld, newCntrlUsr);
 
-    // Sets the addFriend button to the center of the screen
-    addFriend.setTranslateX(WINDOW_WIDTH * 5 / 12);
+		root.setTop(top);
 
-    // sets the removeFriend button to the center of the screen but below the addFriend button
-    removeFriend.setTranslateX(WINDOW_WIDTH * 5 / 12);
-    // removeFriend.setTranslateY(WINDOW_HEIGHT/4);
+		HBox bottom = new HBox();
 
-    // adds the buttons to the HBox bottom.
-    bottom.getChildren().addAll(addFriend, removeFriend);
+		bottom.setPrefHeight(WINDOW_HEIGHT / 2);
 
-    // Aligns all the boxes to their specified regions in the Main BorderPane
-    // "root".
-    root.setTop(top);
-    root.setLeft(left);
-    root.setRight(right);
-    root.setBottom(bottom);
+		display.setTranslateX(WINDOW_WIDTH / 2 - 140);
 
-    return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-  }
+		bottom.getChildren().add(display);
+		root.setBottom(bottom);
 
-  static Scene centralUserOptions() {
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
 
-    RunApplication.APP_TITLE = "Welcome to Central User Options!";
+	static Scene ExportFile() {
 
-    BorderPane root = new BorderPane();
+		RunApplication.APP_TITLE = "Welcome to Export File!";
 
-    Button newCntrlUsr = new Button("Add this central user");
+		Button exp = new Button("Export to File");
 
-    TextField txtFld = new TextField("  Enter the User you'd like to make the Central User");
+		TextField txt = new TextField("Enter the exact path of the file you'd like to export to");
 
-    Button display = new Button("Display Network from the View of the Central User");
+		BorderPane root = new BorderPane();
 
-    HBox top = new HBox();
-    top.setPrefHeight(WINDOW_HEIGHT / 2);
+		HBox h = new HBox();
+		h.setPrefHeight(WINDOW_HEIGHT / 2);
 
-    txtFld.setTranslateX(WINDOW_WIDTH * 3 / 8 - 75);
-    txtFld.setTranslateY(WINDOW_HEIGHT / 4);
-    txtFld.setPrefWidth(WINDOW_WIDTH / 2);
-    newCntrlUsr.setTranslateX(WINDOW_WIDTH * 3 / 8 - 300);
-    newCntrlUsr.setTranslateY(WINDOW_HEIGHT / 4 + 45);
+		txt.setPrefWidth(450);
 
-    top.getChildren().addAll(txtFld, newCntrlUsr);
+		txt.setTranslateX(WINDOW_WIDTH / 2 - 225);
+		txt.setTranslateY(WINDOW_HEIGHT / 2 - 30);
+		exp.setTranslateY(WINDOW_HEIGHT / 2);
+		exp.setTranslateX(WINDOW_WIDTH / 2 - 475);
 
+		h.getChildren().addAll(txt, exp);
 
-    root.setTop(top);
+		root.setTop(h);
 
-    HBox bottom = new HBox();
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
 
-    bottom.setPrefHeight(WINDOW_HEIGHT / 2);
+	/**
+	 * The Scene that is shown when the uploadNetworkFile button is pressed
+	 *
+	 * @return
+	 */
+	static Scene uploadNetworkFile() {
+		// Sets the title of the scene to a new string
+		RunApplication.APP_TITLE = "Upload Network File";
 
-    display.setTranslateX(WINDOW_WIDTH / 2 - 140);
+		// Creates a root BorderPane object to be used as the background of the scene
+		BorderPane root = new BorderPane();
 
+		// creates a spacing that centers the center Vbox Pane
+		HBox space = new HBox();
+		space.setPrefHeight(WINDOW_HEIGHT / 4);
 
-    bottom.getChildren().add(display);
-    root.setBottom(bottom);
+		// creates a new VBox that will be used to stack the nodes of the Scene
+		VBox box = new VBox();
+		root.setCenter(box);
+		root.setTop(space);
 
-    return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-  }
+		// Sets the spacing of nodes in the VBox
+		box.setSpacing(WINDOW_HEIGHT / 8);
+		box.setPrefHeight(WINDOW_HEIGHT / 2);
 
-  static Scene ExportFile() {
+		// Creates a new label explaining the use of the textField and what needs to be
+		// put in the textfield in order to upload a file correctly.
+		Label instruc = new Label("Please type in the address of the network file (.JSON) to upload.");
+		instruc.setTranslateX(WINDOW_WIDTH / 4);
 
-    RunApplication.APP_TITLE = "Welcome to Export File!";
+		// Creates a new TextField to be used input the address of the network file.
+		TextField address = new TextField("Insert Adress Here...");
+		address.setMaxWidth(WINDOW_WIDTH / 3);
+		address.setTranslateX(WINDOW_WIDTH / 3);
 
-    Button exp = new Button("Export to File");
+		// creates the button to finish the task of uploading the network file.
+		Button upload = new Button("Upload File");
+		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
 
-    TextField txt = new TextField("Enter the exact path of the file you'd like to export to");
+		box.getChildren().addAll(instruc, address, upload);
 
-    BorderPane root = new BorderPane();
+		return new Scene(root, WINDOW_HEIGHT, WINDOW_WIDTH);
+	}
 
-    HBox h = new HBox();
-    h.setPrefHeight(WINDOW_HEIGHT / 2);
+	static Scene addUser() {
 
-    txt.setPrefWidth(450);
+	    RunApplication.APP_TITLE = "Welcome to Adding New Users!";
 
-    txt.setTranslateX(WINDOW_WIDTH / 2 - 225);
-    txt.setTranslateY(WINDOW_HEIGHT / 2 - 30);
-    exp.setTranslateY(WINDOW_HEIGHT / 2);
-    exp.setTranslateX(WINDOW_WIDTH / 2 - 475);
+	    TextField txt = new TextField("Enter the name of the User you'd like to Add");
+	    Label label = new Label(
+	        "The names may contain any letters {A-Z}, space, digits {0-9}, underscore {_}, or apostrophe {'}");
 
-    h.getChildren().addAll(txt, exp);
+	    BorderPane root = new BorderPane();
+	    Button done = new Button("ADD");
 
-    root.setTop(h);
+	    HBox h = new HBox();
 
-    return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-  }
+	    VBox V = new VBox();
 
+	    h.setPrefHeight(WINDOW_HEIGHT/4 );
+	    h.setPrefWidth(WINDOW_WIDTH);
+	    V.setPrefWidth(WINDOW_WIDTH/3);
+	    V.setPrefHeight(WINDOW_HEIGHT/4);
 
-  static Scene addUser() {
+	    label.setPrefWidth(WINDOW_WIDTH);
+	    label.setTranslateY(WINDOW_HEIGHT/6);
+	    label.setTranslateX(0);
 
-    RunApplication.APP_TITLE = "Welcome to Adding New Users!";
+	    txt.setPrefWidth(WINDOW_WIDTH/8);
 
-    TextField txt = new TextField("Enter the name of the User you'd like to Add");
-    Label label = new Label(
-        "The names may contain any letters {A-Z}, space, digits {0-9}, underscore {_}, or apostrophe {'}");
+	    txt.setTranslateX(0);
+	    txt.setTranslateY(WINDOW_HEIGHT / 8);
+	    done.setTranslateY(WINDOW_HEIGHT / 8);
+	    done.setTranslateX(WINDOW_WIDTH / 2);
 
-    BorderPane root = new BorderPane();
-    Button done = new Button("ADD");
 
-    HBox h = new HBox();
-    
-    VBox V = new VBox();
-    
-    h.setPrefHeight(WINDOW_HEIGHT/4 );
-    h.setPrefWidth(WINDOW_WIDTH);
-    V.setPrefWidth(WINDOW_WIDTH/3);
-    V.setPrefHeight(WINDOW_HEIGHT/4);
-    
-    label.setPrefWidth(WINDOW_WIDTH);
-    label.setTranslateY(WINDOW_HEIGHT/6);
-    label.setTranslateX(0);
-    
-    txt.setPrefWidth(WINDOW_WIDTH/8);
+	    h.getChildren().addAll(label);
+	    V.getChildren().addAll(txt, done);
 
-    txt.setTranslateX(0);
-    txt.setTranslateY(WINDOW_HEIGHT / 8);
-    done.setTranslateY(WINDOW_HEIGHT / 8);
-    done.setTranslateX(WINDOW_WIDTH / 2);
+	    root.setTop(h);
+	    root.setCenter(V);
 
+	    return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    h.getChildren().addAll(label);
-    V.getChildren().addAll(txt, done);
-
-    root.setTop(h);
-    root.setCenter(V);
-    
-    return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-  }
+	  }
 
 }

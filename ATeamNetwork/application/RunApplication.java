@@ -40,8 +40,8 @@ public class RunApplication extends Application {
         }
 
         // Add the stuff and set the primary stage
-        
-        primaryStage.setScene(View.addUser());
+
+        primaryStage.setScene(View.uploadNetworkFile());
         primaryStage.setTitle(APP_TITLE);
         primaryStage.show();
     }
@@ -53,4 +53,3 @@ public class RunApplication extends Application {
         launch(args);
     }
 }
-    
