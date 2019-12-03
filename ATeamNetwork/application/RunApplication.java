@@ -28,10 +28,16 @@ public class RunApplication extends Application {
 
 	private static final int WINDOW_WIDTH = 600;
 	private static final int WINDOW_HEIGHT = 600;
-	private static String APP_TITLE = "Welcome!";
+	private static String APP_TITLE ;
+	private static Stage  PrimaryStage;
+	private static Scene primaryScene;
 
 	public void start(Stage primaryStage) {
+	  
+	  APP_TITLE = "Welcome";
 		primaryStage.setTitle(APP_TITLE);
+		PrimaryStage = primaryStage;
+		
 		// Main BorderPane for the login screen
 		BorderPane root = new BorderPane();
 
@@ -139,7 +145,10 @@ public class RunApplication extends Application {
 
 		// Set the main scene and show it on the window
 		Scene scene1 = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+		
+		primaryScene = scene1;
 		primaryStage.setScene(scene1);
+		primaryStage.setTitle(APP_TITLE);
 		primaryStage.show();
 	}
 
@@ -194,6 +203,8 @@ public class RunApplication extends Application {
 	    back.setTranslateX(WINDOW_WIDTH / 2);
 
 	    root.setBottom(back);
+	    
+	    back.setOnAction(e -> PrimaryStage.setScene(primaryScene));
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
@@ -227,6 +238,7 @@ public class RunApplication extends Application {
 	    back.setTranslateX(WINDOW_WIDTH / 2);
 
 	    root.setBottom(back);
+	    back.setOnAction(e -> PrimaryStage.setScene(primaryScene));
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
@@ -276,6 +288,7 @@ public class RunApplication extends Application {
 		Button back = new Button("Back");
 	    back.setTranslateX(WINDOW_WIDTH / 2);
 	    root.setBottom(back);
+	    back.setOnAction(e -> PrimaryStage.setScene(primaryScene));
 
 		return new Scene(root, WINDOW_HEIGHT, WINDOW_WIDTH);
 	}
@@ -283,7 +296,7 @@ public class RunApplication extends Application {
 	static Scene addUser() {
 
 		APP_TITLE = "Welcome to Adding New Users!";
-
+		
 		TextField txt = new TextField("Enter the name of the User you'd like to Add");
 		Label label = new Label(
 				"The names may contain any letters {A-Z}, space, digits {0-9}, underscore {_}, or apostrophe {'}");
@@ -321,10 +334,13 @@ public class RunApplication extends Application {
 		root.setTop(h);
 		root.setCenter(V);
 	    root.setBottom(back);
+	    back.setOnAction(e -> PrimaryStage.setScene(primaryScene));
 	    
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	}
+	
+	
 
 	public static void main(String[] args) {
 		launch(args);
