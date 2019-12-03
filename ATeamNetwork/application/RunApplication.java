@@ -36,6 +36,7 @@ public class RunApplication extends Application {
 	  
 	  APP_TITLE = "Welcome";
 		primaryStage.setTitle(APP_TITLE);
+		
 		PrimaryStage = primaryStage;
 		
 		// Main BorderPane for the login screen
