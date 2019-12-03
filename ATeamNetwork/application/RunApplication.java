@@ -1,6 +1,7 @@
 package application;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javafx.application.Application;
@@ -28,7 +29,7 @@ public class RunApplication extends Application {
 
 	private static final int WINDOW_WIDTH = 600;
 	private static final int WINDOW_HEIGHT = 600;
-	private static String APP_TITLE = "Welcome!";
+	static String APP_TITLE = "Welcome!";
 
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle(APP_TITLE);
@@ -88,7 +89,14 @@ public class RunApplication extends Application {
 		Button exportNtwrkFile = new Button("Export Network File");
 		exportNtwrkFile.setOnAction(e -> primaryStage.setScene(RunApplication.ExportFile()));
 		Button viewNetwork = new Button("View Network");
-		viewNetwork.setOnAction(e -> Controller.printNetwork());
+		
+		viewNetwork.setOnAction(e -> {
+			try {
+				primaryStage.setScene(RunApplication.viewNetwork());
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+		});
 
 		// TextField to be added to the right side of the scene. This input and the
 		// input from "user1" will have the option of either adding a friendship
@@ -115,13 +123,13 @@ public class RunApplication extends Application {
 		addFriend.setOnAction(e -> {
 			String u1 = user1.getText();
 			String u2 = user2.getText();
-			Controller.addFriend(u1, u2);
+			Driver.addFriend(u1, u2);
 		});
 		Button removeFriend = new Button("Remove Friendship");
 		removeFriend.setOnAction(e -> {
 			String u1 = user1.getText();
 			String u2 = user2.getText();
-			Controller.removeFriend(u1, u2);
+			Driver.removeFriend(u1, u2);
 		});
 
 		// Positions the bottom buttons correctly onto the scene
@@ -159,13 +167,13 @@ public class RunApplication extends Application {
 		Button newCntrlUsr = new Button("Add this central user");
 		newCntrlUsr.setOnAction(e -> {
 			String user = txtFld.getText();
-			Controller.setCentralUser(user);
+			Driver.setCentralUser(user);
 		});
 
 		Button display = new Button("Display Network from the View of the Central User");
 		display.setOnAction(e -> {
 			String user = txtFld.getText();
-			Controller.printCtrlNetwork(user);
+			Driver.printCtrlNetwork(user);
 		});
 
 		HBox top = new HBox();
@@ -189,11 +197,6 @@ public class RunApplication extends Application {
 
 		bottom.getChildren().add(display);
 		root.setBottom(bottom);
-		
-		Button back = new Button("Back");
-	    back.setTranslateX(WINDOW_WIDTH / 2);
-
-	    root.setBottom(back);
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
@@ -203,7 +206,7 @@ public class RunApplication extends Application {
 		APP_TITLE = "Welcome to Export File!";
 
 		Button exp = new Button("Export to File");
-		exp.setOnAction(e -> Controller.exportFile());
+		exp.setOnAction(e -> Driver.exportFile());
 
 		TextField txt = new TextField("Enter the exact path of the file you'd like to export to");
 
@@ -222,11 +225,6 @@ public class RunApplication extends Application {
 		h.getChildren().addAll(txt, exp);
 
 		root.setTop(h);
-		
-		Button back = new Button("Back");
-	    back.setTranslateX(WINDOW_WIDTH / 2);
-
-	    root.setBottom(back);
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
@@ -268,14 +266,10 @@ public class RunApplication extends Application {
 
 		// creates the button to finish the task of uploading the network file.
 		Button upload = new Button("Upload File");
-		upload.setOnAction(e -> Controller.importFile());
+		upload.setOnAction(e -> Driver.importFile());
 		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
 
 		box.getChildren().addAll(instruc, address, upload);
-		
-		Button back = new Button("Back");
-	    back.setTranslateX(WINDOW_WIDTH / 2);
-	    root.setBottom(back);
 
 		return new Scene(root, WINDOW_HEIGHT, WINDOW_WIDTH);
 	}
@@ -291,10 +285,7 @@ public class RunApplication extends Application {
 		BorderPane root = new BorderPane();
 
 		Button done = new Button("ADD");
-		done.setOnAction(e -> Controller.addUser());
-		
-		Button back = new Button("Back");
-	    back.setTranslateX(WINDOW_WIDTH / 2);
+		done.setOnAction(e -> Driver.addUser());
 
 		HBox h = new HBox();
 		VBox V = new VBox();
@@ -320,10 +311,37 @@ public class RunApplication extends Application {
 
 		root.setTop(h);
 		root.setCenter(V);
-	    root.setBottom(back);
-	    
+
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+	}
+	
+	/**
+	 * Scene that views the whole Network of users, using lines to indicated
+	 * friendships
+	 * 
+	 * @return
+	 * @throws FileNotFoundException 
+	 */
+	static Scene viewNetwork() throws FileNotFoundException {
+
+		// Sets the title of the Scene
+		RunApplication.APP_TITLE = "Welcome to the Network!";
+
+		// For now, we are just using an image to represent what this network will look
+		// like because in order to actually view the network, there has to be backend
+		// functionality.
+		FileInputStream input = new FileInputStream("C:\\Users\\front\\Documents\\CompSci\\CS400\\ATeamNetwork\\application\\NetworkExample.png");
+		Image img = new Image(input);
+		ImageView image = new ImageView(img);
+		
+		//creates a new BorderPane
+		BorderPane root = new BorderPane();
+		
+		//adds the image to the BorderPane
+		root.setCenter(image);
+		
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
 	public static void main(String[] args) {
