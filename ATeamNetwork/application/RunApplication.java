@@ -1,4 +1,5 @@
 package application;
+import application.Model;
 
 import java.io.FileInputStream;
 import java.util.List;
@@ -28,9 +29,13 @@ public class RunApplication extends Application {
 
 	private static final int WINDOW_WIDTH = 600;
 	private static final int WINDOW_HEIGHT = 600;
-	private static String APP_TITLE = "Welcome!";
+	static String APP_TITLE = "Welcome!";
 	private static Stage primaryStage;
 
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle(APP_TITLE);
@@ -276,7 +281,7 @@ public class RunApplication extends Application {
 
 		// creates the button to finish the task of uploading the network file.
 		Button upload = new Button("Upload File");
-		upload.setOnAction(e -> Controller.importFile());
+		upload.setOnAction(e -> Controller.importFile("null"));
 		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
 
 		box.getChildren().addAll(instruc, address, upload);
@@ -336,8 +341,6 @@ public class RunApplication extends Application {
 
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+	
 
 }
