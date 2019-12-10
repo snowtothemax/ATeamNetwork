@@ -1,11 +1,7 @@
 package application;
-
-import application.Model;
-
 import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.List;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
@@ -355,7 +351,7 @@ public class RunApplication extends Application {
 			@Override
 			public void handle(MouseEvent event) {
 				String centralUser = (String) network.getSelectionModel().getSelectedItem();
-				if (centralUser.compareTo(Model.centralUser) != 0) {
+				if (centralUser.compareTo(centralUser) != 0) {
 					controller.setCentralUser(centralUser);
 					controller.printCtrlNetwork(centralUser);
 				}

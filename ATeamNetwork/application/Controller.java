@@ -2,6 +2,7 @@ package application;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Set;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +154,8 @@ public class Controller{
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(str);
+           writer.flush();
+           
         }catch (IOException e) {
             //ERROR
         }
@@ -161,4 +164,26 @@ public class Controller{
     public void clearNetwork() {
         userNetwork = new Graph();
     }
+    
+    
+    List<String> getMutualFriends(String user1, String user2){
+      
+      List<String> mutualFriends;
+      
+      Set<String> allUsers = userNetwork.getAllVertices();
+      
+      if(!allUsers.contains(user1) || !allUsers.contains(user2)) {
+       return null;
+      }
+      
+      List<String> user1Friends = userNetwork.getAdjacentVerticesOf(user1);
+      List<String> user2Friends = userNetwork.getAdjacentVerticesOf(user2);
+      
+       user1Friends.retainAll(user2Friends);
+       
+       mutualFriends = user1Friends;
+      
+      return mutualFriends;
+    }
+    
 }
