@@ -281,6 +281,9 @@ public class Graph implements GraphADT {
       adjMatrix[fromInd][toInd] = false;// removes the edge between the two vertices if it exists
       size--;// increments the amount of edges in the list
     }
+    else {
+      return false;
+    }
 
     // removes toNode from the adjacency list of fromNode
     fromNode.getNeighbors().remove(toNode);
@@ -428,4 +431,16 @@ public class Graph implements GraphADT {
     return null;// returns null otherwise(not in the list)
   }
 
+  public static void main(String [] args) {
+    
+    Graph graph = new Graph();
+    System.out.println(graph.addVertex("1"));
+    System.out.println(graph.addVertex("2"));
+    
+
+    System.out.println(graph.removeEdge("1", "2"));
+ 
+    
+    
+  }
 }

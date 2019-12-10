@@ -141,7 +141,7 @@ public class RunApplication extends Application {
       if(checktestBoxes(u1, u2))
       if(controller.addFriend(u1, u2))
         primaryStage.setScene(successMessage(RunApplication.firstScene(), "Successfully added friendship between "+ u1+" and "+u2));
-      else  primaryStage.setScene(errorMessage(RunApplication.firstScene(), "Error! Couldn't add friendship between "+ u1+" "+u2));
+      else  primaryStage.setScene(errorMessage(RunApplication.firstScene(), "Error! Couldn't add friendship between "+ u1+" and "+u2));
       else errorMessage(RunApplication.firstScene(), "Error! Something must be inserted in both the text boxes");
     });
     Button removeFriend = new Button("Remove Friendship");
@@ -151,7 +151,7 @@ public class RunApplication extends Application {
       if(checktestBoxes(u1, u2))
         if(controller.removeFriend(u1, u2))
         primaryStage.setScene(successMessage(RunApplication.firstScene(), "Successfully removed friendship between "+ u1+" and "+u2) ) ;
-        else  primaryStage.setScene(errorMessage(RunApplication.firstScene(), "Error! Couldn't  remove friendship between "+ u1+" "+u2));
+        else  primaryStage.setScene(errorMessage(RunApplication.firstScene(), "Error! Couldn't  remove friendship between "+ u1+" and "+u2));
       else primaryStage.setScene(errorMessage(RunApplication.firstScene(), "Error! Something must be inserted in both the text boxes"));
     });
     
