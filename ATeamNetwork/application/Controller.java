@@ -58,6 +58,6 @@ public class Controller extends Model {
 	}
 
 	public void addUser(String name) {
-
+		userNetwork.addVertex(name);
 	}
 }
