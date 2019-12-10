@@ -25,16 +25,11 @@ public class Controller extends Model{
 
     public void setCentralUser(String user) {
         this.centralUser = user;
-
-        // TODO
-    }
-
-    public void printNetwork() {
-        // TODO
     }
 
     public void printCtrlNetwork(String user) {
-        // TODO
+        List friends = userNetwork.getAdjacentVerticesOf(user);
+		RunApplication.primaryStage.setScene(RunApplication.Network(friends));
     }
 
     public void addFriend(String user1, String user2) {
@@ -114,7 +109,7 @@ public class Controller extends Model{
     }
 
     public void addUser(String name) {
-        // TODO
+        userNetwork.addVertex(name);
     }
 
     public void removeUser(String name) {
