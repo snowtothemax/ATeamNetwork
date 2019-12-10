@@ -1,19 +1,25 @@
 package application;
 
+import application.Model;
+
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -29,18 +35,22 @@ public class RunApplication extends Application {
 
 	private static final int WINDOW_WIDTH = 600;
 	private static final int WINDOW_HEIGHT = 600;
-	private static String APP_TITLE ;
-	private static Stage  PrimaryStage;
-	private static Scene primaryScene;
+	static String APP_TITLE = "Welcome!";
+	static Stage primaryStage;
+	static Controller controller = new Controller();
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 	public void start(Stage primaryStage) {
-
-	  APP_TITLE = "Welcome";
+		this.primaryStage = primaryStage;
 		primaryStage.setTitle(APP_TITLE);
+		primaryStage.setScene(RunApplication.firstScene());
+		primaryStage.show();
+	}
 
-		PrimaryStage = primaryStage;
-
-		// Main BorderPane for the login screen
+	static Scene firstScene() {
 		BorderPane root = new BorderPane();
 
 		// Horizontal box to be but at the top of the application
@@ -96,14 +106,7 @@ public class RunApplication extends Application {
 		Button exportNtwrkFile = new Button("Export Network File");
 		exportNtwrkFile.setOnAction(e -> primaryStage.setScene(RunApplication.ExportFile()));
 		Button viewNetwork = new Button("View Network");
-
-		viewNetwork.setOnAction(e -> {
-			try {
-				primaryStage.setScene(RunApplication.viewNetwork());
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			}
-		});
+		viewNetwork.setOnAction(e -> primaryStage.setScene(RunApplication.centralUserOptions()));
 
 		// TextField to be added to the right side of the scene. This input and the
 		// input from "user1" will have the option of either adding a friendship
@@ -130,13 +133,13 @@ public class RunApplication extends Application {
 		addFriend.setOnAction(e -> {
 			String u1 = user1.getText();
 			String u2 = user2.getText();
-			Controller.addFriend(u1, u2);
+			controller.addFriend(u1, u2);
 		});
 		Button removeFriend = new Button("Remove Friendship");
 		removeFriend.setOnAction(e -> {
 			String u1 = user1.getText();
 			String u2 = user2.getText();
-			Controller.removeFriend(u1, u2);
+			controller.removeFriend(u1, u2);
 		});
 
 		// Positions the bottom buttons correctly onto the scene
@@ -155,21 +158,18 @@ public class RunApplication extends Application {
 		// Set the main scene and show it on the window
 		Scene scene1 = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-		primaryScene = scene1;
-		primaryStage.setScene(scene1);
-		primaryStage.setTitle(APP_TITLE);
-		primaryStage.show();
+		return scene1;
 	}
 
 	/**
 	 * The scene that is accessed when the button "Central User Options" is pressed.
-	 *
+	 * 
 	 * @return Scene - The scene for Central User Options
 	 */
 	static Scene centralUserOptions() {
 
 		APP_TITLE = "Welcome to Central User Options!";
-
+		primaryStage.setTitle(APP_TITLE);
 		BorderPane root = new BorderPane();
 
 		TextField txtFld = new TextField("  Enter the User you'd like to make the Central User");
@@ -177,13 +177,13 @@ public class RunApplication extends Application {
 		Button newCntrlUsr = new Button("Add this central user");
 		newCntrlUsr.setOnAction(e -> {
 			String user = txtFld.getText();
-			Controller.setCentralUser(user);
+			controller.setCentralUser(user);
 		});
 
-		Button display = new Button("Display Network from the View of the Central User");
+		Button display = new Button("Display Network");
 		display.setOnAction(e -> {
 			String user = txtFld.getText();
-			Controller.printCtrlNetwork(user);
+			controller.printCtrlNetwork(user);
 		});
 
 		HBox top = new HBox();
@@ -194,26 +194,20 @@ public class RunApplication extends Application {
 		txtFld.setPrefWidth(WINDOW_WIDTH / 2);
 		newCntrlUsr.setTranslateX(WINDOW_WIDTH * 3 / 8 - 300);
 		newCntrlUsr.setTranslateY(WINDOW_HEIGHT / 4 + 45);
+		display.setTranslateX(WINDOW_WIDTH * 3 / 8 - 416);
+		display.setTranslateY(WINDOW_HEIGHT / 4 + 80);
 
-		top.getChildren().addAll(txtFld, newCntrlUsr);
-
+		top.getChildren().addAll(txtFld, newCntrlUsr, display);
 		root.setTop(top);
 
 		HBox bottom = new HBox();
-
 		bottom.setPrefHeight(WINDOW_HEIGHT / 2);
 
-		display.setTranslateX(WINDOW_WIDTH / 2 - 140);
-
-		bottom.getChildren().add(display);
-		root.setBottom(bottom);
-
 		Button back = new Button("Back");
-	    back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
 
-	    root.setBottom(back);
-
-	    back.setOnAction(e -> PrimaryStage.setScene(primaryScene));
+		root.setBottom(back);
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
@@ -221,9 +215,9 @@ public class RunApplication extends Application {
 	static Scene ExportFile() {
 
 		APP_TITLE = "Welcome to Export File!";
-
+		primaryStage.setTitle(APP_TITLE);
 		Button exp = new Button("Export to File");
-		exp.setOnAction(e -> Controller.exportFile());
+		exp.setOnAction(e -> controller.exportFile());
 
 		TextField txt = new TextField("Enter the exact path of the file you'd like to export to");
 
@@ -244,23 +238,23 @@ public class RunApplication extends Application {
 		root.setTop(h);
 
 		Button back = new Button("Back");
-	    back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
 
-	    root.setBottom(back);
-	    back.setOnAction(e -> PrimaryStage.setScene(primaryScene));
+		root.setBottom(back);
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
 	/**
 	 * The Scene that is shown when the uploadNetworkFile button is pressed
-	 *
+	 * 
 	 * @return
 	 */
 	static Scene uploadNetworkFile() {
 		// Sets the title of the scene to a new string
 		APP_TITLE = "Upload Network File";
-
+		primaryStage.setTitle(APP_TITLE);
 		// Creates a root BorderPane object to be used as the background of the scene
 		BorderPane root = new BorderPane();
 
@@ -289,15 +283,15 @@ public class RunApplication extends Application {
 
 		// creates the button to finish the task of uploading the network file.
 		Button upload = new Button("Upload File");
-		upload.setOnAction(e -> Controller.importFile());
+		upload.setOnAction(e -> controller.importFile("null"));
 		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
 
 		box.getChildren().addAll(instruc, address, upload);
 
 		Button back = new Button("Back");
-	    back.setTranslateX(WINDOW_WIDTH / 2);
-	    root.setBottom(back);
-	    back.setOnAction(e -> PrimaryStage.setScene(primaryScene));
+		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
+		root.setBottom(back);
 
 		return new Scene(root, WINDOW_HEIGHT, WINDOW_WIDTH);
 	}
@@ -305,7 +299,7 @@ public class RunApplication extends Application {
 	static Scene addUser() {
 
 		APP_TITLE = "Welcome to Adding New Users!";
-
+		primaryStage.setTitle(APP_TITLE);
 		TextField txt = new TextField("Enter the name of the User you'd like to Add");
 		Label label = new Label(
 				"The names may contain any letters {A-Z}, space, digits {0-9}, underscore {_}, or apostrophe {'}");
@@ -313,8 +307,14 @@ public class RunApplication extends Application {
 		BorderPane root = new BorderPane();
 
 		Button done = new Button("ADD");
-	
-	//	done.setOnAction(e -> Controller.addUser());
+		done.setOnAction(e -> {
+			String user = txt.getText();
+			controller.addUser(user);
+		});
+
+		Button back = new Button("Back");
+		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
 
 		HBox h = new HBox();
 		VBox V = new VBox();
@@ -337,48 +337,34 @@ public class RunApplication extends Application {
 
 		h.getChildren().addAll(label);
 		V.getChildren().addAll(txt, done);
-		Button back = new Button("Back");
-        back.setTranslateX(WINDOW_WIDTH / 2);
 
 		root.setTop(h);
 		root.setCenter(V);
-	    root.setBottom(back);
-	    back.setOnAction(e -> PrimaryStage.setScene(primaryScene));
+		root.setBottom(back);
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	}
 
-	/**
-	 * Scene that views the whole Network of users, using lines to indicated
-	 * friendships
-	 *
-	 * @return
-	 * @throws FileNotFoundException
-	 */
-	static Scene viewNetwork() throws FileNotFoundException {
-
-		// Sets the title of the Scene
-		RunApplication.APP_TITLE = "Welcome to the Network!";
-
-		// For now, we are just using an image to represent what this network will look
-		// like because in order to actually view the network, there has to be backend
-		// functionality.
-		FileInputStream input = new FileInputStream("C:\\Users\\front\\Documents\\CompSci\\CS400\\ATeamNetwork\\application\\NetworkExample.png");
-		Image img = new Image(input);
-		ImageView image = new ImageView(img);
-
-		//creates a new BorderPane
+	static Scene Network(List friends) {
+		APP_TITLE = "Welcome to Friend Network!";
+		primaryStage.setTitle(APP_TITLE);
 		BorderPane root = new BorderPane();
+		ListView network = new ListView(FXCollections.observableList(Arrays.asList(friends)));
+		network.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				String centralUser = (String) network.getSelectionModel().getSelectedItem();
+				if (centralUser.compareTo(Model.centralUser) != 0) {
+					controller.setCentralUser(centralUser);
+					controller.printCtrlNetwork(centralUser);
+				}
 
-		//adds the image to the BorderPane
-		root.setCenter(image);
+			}
 
+		});
+		root.getChildren().add(network);
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 
 }
