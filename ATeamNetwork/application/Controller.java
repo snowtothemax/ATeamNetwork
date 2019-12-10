@@ -165,7 +165,6 @@ public class Controller{
         userNetwork = new Graph();
     }
     
-    
     List<String> getMutualFriends(String user1, String user2){
       
       List<String> mutualFriends;
