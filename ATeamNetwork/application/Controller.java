@@ -1,39 +1,39 @@
 package application;
 
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
-import java.util.Set;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 import application.Graph;
 import application.RunApplication;
 import javafx.stage.Stage;
 
-
 public class Controller {
-   
+
     private Graph userNetwork;
     private String centralUser;
     private File file;
-   
+
     public Controller() {
         userNetwork = new Graph();
         this.file = new File("log.txt");
     }
-   
+
     public Controller(String fileName) {
         userNetwork = new Graph();
         this.file = new File(fileName);
     }
-   
+
     public void setCentralUser(String user) {
         this.centralUser = user;
-       
+
         String str = "s " + user + "\n";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -43,7 +43,7 @@ public class Controller {
         }
         // TODO
     }
-   
+
     public String getCentralUser() {
     return centralUser;
     }
@@ -57,7 +57,7 @@ public class Controller {
         //Since the implemented graph is directed, an edge must be added both ways
         userNetwork.addEdge(user1, user2);
         userNetwork.addEdge(user2, user1);
-       
+
         String str = "a " + user1 + " " + user2 + "\n";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -65,16 +65,16 @@ public class Controller {
         }catch (IOException e) {
             //ERROR
         }
-       
-       
+
+
 
     }
-   
+
     public void removeFriend(String user1, String user2) {
         //Remove the undirected edge from between the two users.
         userNetwork.removeEdge(user1,user2);
         userNetwork.removeEdge(user2, user1);
-       
+
         String str = "r " + user1 + " " + user2 + "\n";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -120,7 +120,7 @@ public class Controller {
                     default:
                     primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(),error));
                         break;
-                           
+
                 }
             }
         } catch (FileNotFoundException e) {
@@ -139,9 +139,9 @@ public class Controller {
     }
 
     public boolean addUser(String name) {
-      
+
      boolean result = userNetwork.addVertex(name);
-       
+
         String str = "a " + name + "\n";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -151,11 +151,11 @@ public class Controller {
         }
       return result;
     }
-    
+
     public boolean RemoveUser(String name) {
-      
+
       boolean result = userNetwork.removeVertex(name);
-        
+
          String str = "r " + name + "\n";
          try {
              BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -165,27 +165,27 @@ public class Controller {
          }
        return result;
      }
-   
+
     List<String> getMutualFriends(String user1, String user2){
-      
+
       List<String> mutualFriends;
-      
+
       Set<String> allUsers = userNetwork.getAllVertices();
-      
+
       if(!allUsers.contains(user1) || !allUsers.contains(user2)) {
        return null;
       }
-      
+
       List<String> user1Friends = userNetwork.getAdjacentVerticesOf(user1);
       List<String> user2Friends = userNetwork.getAdjacentVerticesOf(user2);
-      
+
        user1Friends.retainAll(user2Friends);
-       
+
        mutualFriends = user1Friends;
-      
+
       return mutualFriends;
     }
-   
+
     public void clearNetwork() {
         userNetwork = new Graph();
     }
