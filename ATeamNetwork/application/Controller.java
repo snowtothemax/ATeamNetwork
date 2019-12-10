@@ -4,53 +4,79 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import application.Graph;
 import application.RunApplication;
 import application.Model;
 
 
-public class Controller extends Model{
-
+public class Controller{
+    
     private Graph userNetwork;
     private String centralUser;
     private File file;
-
+    
+    public Controller() {
+        userNetwork = new Graph();
+        this.file = new File("log.txt");
+    }
+    
     public Controller(String fileName) {
         userNetwork = new Graph();
-        this.file = new File(fileName);
+        this.file = new File(fileName); 
     }
-
+    
     public void setCentralUser(String user) {
         this.centralUser = user;
+        
+        String str = "s " + user + "\n";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(str);
+        }catch (IOException e) {
+            //ERROR
+        }
+        // TODO
     }
 
     public void printCtrlNetwork(String user) {
         List friends = userNetwork.getAdjacentVerticesOf(user);
-		RunApplication.primaryStage.setScene(RunApplication.Network(friends));
+        RunApplication.primaryStage.setScene(RunApplication.Network(friends));
     }
 
     public void addFriend(String user1, String user2) {
         //Since the implemented graph is directed, an edge must be added both ways
         userNetwork.addEdge(user1, user2);
         userNetwork.addEdge(user2, user1);
-
+        
         String str = "a " + user1 + " " + user2 + "\n";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(str);
-        catch (IOException e) {
-
-
+        }catch (IOException e) {
+            //ERROR
+        }
+        
+        
 
     }
-
+    
     public void removeFriend(String user1, String user2) {
         //Remove the undirected edge from between the two users.
         userNetwork.removeEdge(user1,user2);
         userNetwork.removeEdge(user2, user1);
+        
+        String str = "r " + user1 + " " + user2 + "\n";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(str);
+        }catch (IOException e) {
+            //ERROR
+        }
     }
 
     public void importFile(String filePath) {
@@ -66,7 +92,7 @@ public class Controller extends Model{
                 if (command.length < 2 || command.length > 3) {
                     //TODO
                     //ERROR
-
+                    
                 }
                 switch (command[0].charAt(0)) {
                     case 'a':
@@ -90,7 +116,7 @@ public class Controller extends Model{
                         //TODO
                         //ERROR
                         break;
-
+                            
                 }
             }
         } catch (FileNotFoundException e) {
@@ -104,15 +130,35 @@ public class Controller extends Model{
      * @return
      */
     public File exportFile() {
-
-        return null;
+        return file;
     }
 
     public void addUser(String name) {
         userNetwork.addVertex(name);
+        
+        String str = "a " + name + "\n";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(str);
+        }catch (IOException e) {
+            //ERROR
+        }
+        // TODO
     }
-
+    
     public void removeUser(String name) {
-
+        userNetwork.removeVertex(name);
+        
+        String str = "r " + name + "\n";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(str);
+        }catch (IOException e) {
+            //ERROR
+        }
+    }
+    
+    public void clearNetwork() {
+        userNetwork = new Graph();
     }
 }
