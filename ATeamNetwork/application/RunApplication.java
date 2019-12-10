@@ -137,6 +137,15 @@ public class RunApplication extends Application {
 			String u2 = user2.getText();
 			controller.removeFriend(u1, u2);
 		});
+		
+		Button mutualFriends = new Button("Get Mutual Friends");
+		
+		mutualFriends.setOnAction(e ->{
+		  
+		  String u1 = user1.getText();
+          String u2 = user2.getText();
+           controller.getMutualFriends(u1, u2);
+		});
 
 		// Positions the bottom buttons correctly onto the scene
 		addFriend.setTranslateX(WINDOW_WIDTH * 5 / 12);// Sets the addFriend button to the center of the screen
@@ -339,7 +348,20 @@ public class RunApplication extends Application {
 		root.setBottom(back);
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
+	
+	static Scene displayMutualFriends(List<String> mutualFriends, String user1, String user2) {
+	  
+	  APP_TITLE = "Mutual Friends between " + user1 +" and "+ user2+".";
 
+	  primaryStage.setTitle(APP_TITLE);
+	  
+	  if(mutualFriends == null) {
+	    
+	  }
+
+	  
+	  
 	}
 
 	static Scene Network(List friends) {
@@ -355,9 +377,7 @@ public class RunApplication extends Application {
 					controller.setCentralUser(centralUser);
 					controller.printCtrlNetwork(centralUser);
 				}
-
 			}
-
 		});
 		root.getChildren().add(network);
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
