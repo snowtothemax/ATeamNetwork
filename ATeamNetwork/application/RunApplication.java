@@ -313,7 +313,8 @@ public class RunApplication extends Application {
 		BorderPane root = new BorderPane();
 
 		Button done = new Button("ADD");
-		done.setOnAction(e -> Controller.addUser());
+	
+	//	done.setOnAction(e -> Controller.addUser());
 
 		HBox h = new HBox();
 		VBox V = new VBox();

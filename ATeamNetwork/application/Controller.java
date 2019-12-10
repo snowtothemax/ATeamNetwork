@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Controller {
   
-  private ArrayList<String> user;
+  
   
   
   public static void setCentralUser(String user) {
