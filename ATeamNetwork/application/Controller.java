@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import application.Graph;
 import application.RunApplication;
+import javafx.stage.Stage;
 
 
 public class Controller {
@@ -78,7 +79,7 @@ public class Controller {
         }
     }
 
-    public void importFile(String filePath) {
+    public void importFile(String filePath, Stage primaryStage) {
         try {
             Scanner readFile = new Scanner(new File(filePath));
             ArrayList<String[]> commands = new ArrayList<String[]>();
@@ -87,11 +88,11 @@ public class Controller {
                 commands.add(line.split(" "));
             }
             for (int i = 0; i < commands.size(); i++) {
+            	String error = "ERROR: The input file was not formatted correctly. Look at line " + i + " of the input file.";
                 String[] command = commands.get(i);
                 if (command.length < 2 || command.length > 3) {
-                    //TODO
-                    //ERROR
-                    
+                    primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(), error));
+                    break;
                 }
                 switch (command[0].charAt(0)) {
                     case 'a':
@@ -112,14 +113,14 @@ public class Controller {
                         setCentralUser(command[1]);
                         break;
                     default:
-                        //TODO
-                        //ERROR
+                    	primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(),error));
                         break;
                             
                 }
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        	primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(), "ERROR: The input file was not formatted correctly. Look at line " + 0 + " of the input file."));
+            return;
         }
         return;
     }

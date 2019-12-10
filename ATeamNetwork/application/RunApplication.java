@@ -283,7 +283,7 @@ public class RunApplication extends Application {
 
 		// creates the button to finish the task of uploading the network file.
 		Button upload = new Button("Upload File");
-		upload.setOnAction(e -> controller.importFile("null"));
+		upload.setOnAction(e -> controller.importFile("null",primaryStage));
 		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
 
 		box.getChildren().addAll(instruc, address, upload);
@@ -360,6 +360,24 @@ public class RunApplication extends Application {
 		});
 		root.getChildren().add(network);
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
+	
+	static Scene errorMessage(Scene currScene, String message) {
+		APP_TITLE = "ERROR!";
+		primaryStage.setTitle(APP_TITLE);
+		Button back = new Button("Back");
+		back.setOnAction(e -> primaryStage.setScene(currScene));
+		BorderPane root = new BorderPane();
+		HBox box = new HBox();
+		Label errorMessage = new Label(message);
+		box.getChildren().add(errorMessage);
+		root.setCenter(box);
+		root.setBottom(back);
+		back.setTranslateX(WINDOW_WIDTH/8);
+		errorMessage.setTranslateY(WINDOW_HEIGHT/8);
+		
+		return new Scene(root, WINDOW_WIDTH/2, WINDOW_HEIGHT/4);
+		
 	}
 
 }
