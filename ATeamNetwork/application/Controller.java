@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import application.Graph;
 import application.RunApplication;
-import application.Model;
+
 
 
 public class Controller{
