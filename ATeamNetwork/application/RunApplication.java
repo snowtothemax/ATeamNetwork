@@ -8,6 +8,7 @@ import java.util.List;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -353,7 +354,7 @@ public class RunApplication extends Application {
 		primaryStage.setTitle(APP_TITLE);
 		BorderPane root = new BorderPane();
 		ListView network = new ListView<>();
-		ObservableList<String> items = FXCollections.observableArrayList(friends);
+		ObservableList items = FXCollections.observableArrayList(friends);
 		network.setItems(items);
 		network.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override

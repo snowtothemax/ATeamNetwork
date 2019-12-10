@@ -42,6 +42,10 @@ public class Controller {
         }
         // TODO
     }
+    
+    public String getCentralUser() {
+    	return centralUser;
+    }
 
     public void printCtrlNetwork(String user) {
         List friends = userNetwork.getAdjacentVerticesOf(user);
