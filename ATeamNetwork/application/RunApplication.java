@@ -1,7 +1,11 @@
 package application;
+
+import application.Model;
+
 import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.List;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -137,15 +141,6 @@ public class RunApplication extends Application {
 			String u1 = user1.getText();
 			String u2 = user2.getText();
 			controller.removeFriend(u1, u2);
-		});
-		
-		Button mutualFriends = new Button("Get Mutual Friends");
-		
-		mutualFriends.setOnAction(e ->{
-		  
-		  String u1 = user1.getText();
-          String u2 = user2.getText();
-           controller.getMutualFriends(u1, u2);
 		});
 
 		// Positions the bottom buttons correctly onto the scene
@@ -289,7 +284,7 @@ public class RunApplication extends Application {
 
 		// creates the button to finish the task of uploading the network file.
 		Button upload = new Button("Upload File");
-		upload.setOnAction(e -> controller.importFile("null"));
+		upload.setOnAction(e -> controller.importFile("null",primaryStage));
 		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
 
 		box.getChildren().addAll(instruc, address, upload);
@@ -349,42 +344,50 @@ public class RunApplication extends Application {
 		root.setBottom(back);
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-	}
-	
-	static Scene displayMutualFriends(List<String> mutualFriends, String user1, String user2) {
-	  
-	  APP_TITLE = "Mutual Friends between " + user1 +" and "+ user2+".";
 
-	  primaryStage.setTitle(APP_TITLE);
-	  
-	  if(mutualFriends == null) {
-	    
-	  }
-
-	  
-	  
 	}
 
 	static Scene Network(List friends) {
-		APP_TITLE = "Welcome to Friend Network!";
+		String User = controller.getCentralUser();
+		APP_TITLE = "Welcome to Friend Network of " + User;
+
 		primaryStage.setTitle(APP_TITLE);
 		BorderPane root = new BorderPane();
 		ListView network = new ListView<>();
 		ObservableList items = FXCollections.observableArrayList(friends);
 		network.setItems(items);
-		ListView network = new ListView(FXCollections.observableList(Arrays.asList(friends)));
 		network.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				String centralUser = (String) network.getSelectionModel().getSelectedItem();
-				if (centralUser.compareTo(centralUser) != 0) {
+				if (centralUser.compareTo(controller.getCentralUser()) != 0) {
 					controller.setCentralUser(centralUser);
 					controller.printCtrlNetwork(centralUser);
 				}
+
 			}
+
 		});
-		root.getChildren().add(network);
+		root.setTop(network);
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
+	
+	static Scene errorMessage(Scene currScene, String message) {
+		APP_TITLE = "ERROR!";
+		primaryStage.setTitle(APP_TITLE);
+		Button back = new Button("Back");
+		back.setOnAction(e -> primaryStage.setScene(currScene));
+		BorderPane root = new BorderPane();
+		HBox box = new HBox();
+		Label errorMessage = new Label(message);
+		box.getChildren().add(errorMessage);
+		root.setCenter(box);
+		root.setBottom(back);
+		back.setTranslateX(WINDOW_WIDTH/8);
+		errorMessage.setTranslateY(WINDOW_HEIGHT/8);
+		
+		return new Scene(root, WINDOW_WIDTH/2, WINDOW_HEIGHT/4);
+		
 	}
 
 }

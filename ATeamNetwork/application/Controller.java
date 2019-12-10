@@ -1,8 +1,7 @@
 package application;
-import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.Set;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +11,10 @@ import java.io.IOException;
 
 import application.Graph;
 import application.RunApplication;
+import javafx.stage.Stage;
 
 
-
-public class Controller{
+public class Controller {
     
     private Graph userNetwork;
     private String centralUser;
@@ -84,7 +83,7 @@ public class Controller{
         }
     }
 
-    public void importFile(String filePath) {
+    public void importFile(String filePath, Stage primaryStage) {
         try {
             Scanner readFile = new Scanner(new File(filePath));
             ArrayList<String[]> commands = new ArrayList<String[]>();
@@ -93,11 +92,11 @@ public class Controller{
                 commands.add(line.split(" "));
             }
             for (int i = 0; i < commands.size(); i++) {
+            	String error = "ERROR: The input file was not formatted correctly. Look at line " + i + " of the input file.";
                 String[] command = commands.get(i);
                 if (command.length < 2 || command.length > 3) {
-                    //TODO
-                    //ERROR
-                    
+                    primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(), error));
+                    break;
                 }
                 switch (command[0].charAt(0)) {
                     case 'a':
@@ -118,14 +117,14 @@ public class Controller{
                         setCentralUser(command[1]);
                         break;
                     default:
-                        //TODO
-                        //ERROR
+                    	primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(),error));
                         break;
                             
                 }
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        	primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(), "ERROR: The input file was not formatted correctly. Look at line " + 0 + " of the input file."));
+            return;
         }
         return;
     }
@@ -158,8 +157,6 @@ public class Controller{
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(str);
-           writer.flush();
-           
         }catch (IOException e) {
             //ERROR
         }
@@ -168,26 +165,4 @@ public class Controller{
     public void clearNetwork() {
         userNetwork = new Graph();
     }
-    
-    
-    void getMutualFriends(String user1, String user2){
-      
-      List<String> mutualFriends;
-      
-      Set<String> allUsers = userNetwork.getAllVertices();
-      
-      if(!allUsers.contains(user1) || !allUsers.contains(user2)) {
-       RunApplication.displayMutualFriends(null, user1, user2);
-      }
-      
-      List<String> user1Friends = userNetwork.getAdjacentVerticesOf(user1);
-      List<String> user2Friends = userNetwork.getAdjacentVerticesOf(user2);
-      
-       user1Friends.retainAll(user2Friends);
-       
-       mutualFriends = user1Friends;
-       
-       RunApplication.displayMutualFriends(mutualFriends, user1, user2);
-    }
-    
 }
