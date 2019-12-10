@@ -47,10 +47,7 @@ public class RunApplication extends Application {
   public void start(Stage primaryStage) {
     this.primaryStage = primaryStage;
     primaryStage.setTitle(APP_TITLE);
-    
-    List<String> names = new ArrayList<String>();
-  //  names.add("ADAMN");
-    primaryStage.setScene(RunApplication.displayMutualFriends(null, "1", "2"));
+    primaryStage.setScene(RunApplication.firstScene());
     primaryStage.show();
   }
 
