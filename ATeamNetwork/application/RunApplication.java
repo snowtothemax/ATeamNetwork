@@ -348,21 +348,26 @@ public class RunApplication extends Application {
 	}
 
 	static Scene Network(List friends) {
-		String User = controller.getCentralUser();
+		String User = controller.getCentralUser(); // current central user
 		APP_TITLE = "Welcome to Friend Network of " + User;
 
 		primaryStage.setTitle(APP_TITLE);
 		BorderPane root = new BorderPane();
 		ListView network = new ListView<>();
-		ObservableList items = FXCollections.observableArrayList(friends);
+		ObservableList<String> items = FXCollections.observableArrayList(friends);
 		network.setItems(items);
 		network.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				String centralUser = (String) network.getSelectionModel().getSelectedItem();
-				if (centralUser.compareTo(controller.getCentralUser()) != 0) {
-					controller.setCentralUser(centralUser);
-					controller.printCtrlNetwork(centralUser);
+				String user = (String) network.getSelectionModel().getSelectedItem(); // selected user
+				if (event.getButton() == MouseButton.PRIMARY) { // left click
+					if (user.compareTo(controller.getCentralUser()) != 0) {
+						controller.setCentralUser(user);
+						controller.printCtrlNetwork(user);
+					}
+				} else if (event.getButton() == MouseButton.SECONDARY) { // right click
+					controller.removeFriend(User, user);
+					controller.printCtrlNetwork(User);
 				}
 
 			}
