@@ -88,7 +88,7 @@ public class RunApplication extends Application {
     // Buttons on the left
     Button uploadNtwrkFile = new Button("Upload Network File");
     uploadNtwrkFile.setOnAction(e -> primaryStage.setScene(RunApplication.uploadNetworkFile()));
-    Button addNewUser = new Button("Add New User");
+    Button addNewUser = new Button("Add New User/Remove User");
     addNewUser.setOnAction(e -> primaryStage.setScene(RunApplication.addUser()));
 
     // Adds all the above nodes to the VBox "left" and also positions them to their
@@ -135,31 +135,46 @@ public class RunApplication extends Application {
     // Buttons to be added to the HBox "bottom"
     Button addFriend = new Button("Add Friendship");
     addFriend.setOnAction(e -> {
+      
       String u1 = user1.getText();
       String u2 = user2.getText();
+      if(checktestBoxes(u1, u2))
       controller.addFriend(u1, u2);
+      else errorMessage(RunApplication.firstScene(), "Error! Something must be inserted in both the text boxes");
     });
     Button removeFriend = new Button("Remove Friendship");
     removeFriend.setOnAction(e -> {
       String u1 = user1.getText();
       String u2 = user2.getText();
+      if(checktestBoxes(u1, u2))
       controller.removeFriend(u1, u2);
+      else errorMessage(RunApplication.firstScene(), "Error! Something must be inserted in both the text boxes");
+    });
+    
+    Button mutualButton = new Button("Get Mutual Friends");
+    mutualButton.setOnAction(e ->{
+      String u1 = user1.getText();
+      String u2 = user2.getText();
+      if(checktestBoxes(u1, u2))
+     primaryStage.setScene(displayMutualFriends(controller.getMutualFriends(u1, u2), u1, u2)); 
+      else primaryStage.setScene(errorMessage(RunApplication.firstScene(), "Error! Something must be inserted in both the text boxes"));
     });
 
     // Positions the bottom buttons correctly onto the scene
     addFriend.setTranslateX(WINDOW_WIDTH * 5 / 12);// Sets the addFriend button to the center of the
                                                    // screen
     removeFriend.setTranslateX(WINDOW_WIDTH * 5 / 12); // sets the removeFriend button below the
-                                                       // addFriend button
-
+                                                      // addFriend button
+    mutualButton.setTranslateX(WINDOW_WIDTH * 5 / 12);
     // adds the buttons to the HBox bottom.
-    bottom.getChildren().addAll(addFriend, removeFriend);
+    bottom.getChildren().addAll(addFriend, removeFriend, mutualButton);
 
     // Aligns all the boxes to their specified regions in the Main BorderPane
     root.setTop(top);
     root.setLeft(left);
     root.setRight(right);
     root.setBottom(bottom);
+  
 
     // Set the main scene and show it on the window
     Scene scene1 = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -312,10 +327,20 @@ public class RunApplication extends Application {
 
     BorderPane root = new BorderPane();
 
-    Button done = new Button("ADD");
-    done.setOnAction(e -> {
+    Button add = new Button("ADD");
+    add.setOnAction(e -> {
       String user = txt.getText();
-      controller.addUser(user);
+      if(controller.addUser(user)&& checktestBoxes(user))
+        primaryStage.setScene(successMessage(addUser(), "Successfully added user:"+"\""+user+"\""));
+      else primaryStage.setScene(errorMessage(addUser(), "Error! Couldn't add user:"+"\""+user+"\""));      
+    });
+    
+    Button remove = new Button("Remove");
+    remove.setOnAction(e -> {
+      String user = txt.getText();
+      if(controller.RemoveUser(user)&& checktestBoxes(user))
+        primaryStage.setScene(successMessage(addUser(), "Successfully removed user:"+"\""+user+"\""));
+      else primaryStage.setScene(errorMessage(addUser(), "Error! Couldn't remove user:"+"\""+user+"\""));      
     });
 
     Button back = new Button("Back");
@@ -338,11 +363,14 @@ public class RunApplication extends Application {
     txt.setTranslateX(0);
     txt.setTranslateY(WINDOW_HEIGHT / 8);
 
-    done.setTranslateY(WINDOW_HEIGHT / 8);
-    done.setTranslateX(WINDOW_WIDTH / 2);
+    add.setTranslateY(WINDOW_HEIGHT / 8);
+    add.setTranslateX(WINDOW_WIDTH / 2);
+    
+    remove.setTranslateX(WINDOW_WIDTH/2);
+    remove.setTranslateY(WINDOW_HEIGHT*2/8);
 
     h.getChildren().addAll(label);
-    V.getChildren().addAll(txt, done);
+    V.getChildren().addAll(txt, add, remove);
 
     root.setTop(h);
     root.setCenter(V);
@@ -435,6 +463,33 @@ public class RunApplication extends Application {
     return new Scene(root, WINDOW_WIDTH*2/3, WINDOW_HEIGHT);
 
   }
+  
+  static boolean checktestBoxes(String txt1, String txt2) {
+    
+    txt1 = txt1.trim();
+    
+    if(txt1 == null || txt1.equals("") || txt1.isBlank()||txt1.isEmpty()) {
+      return false;
+    }
+    
+    txt2 = txt2.trim();
+    
+    if(txt2 == null|| txt2.equals("") || txt2.isBlank()||txt2.isEmpty()) {
+      return false;
+    }
+    
+    return true;
+  }
+  
+ static boolean checktestBoxes(String txt1) {
+    
+    txt1 = txt1.trim();
+    
+    if(txt1 == null || txt1.equals("") || txt1.isBlank()||txt1.isEmpty()) {
+      return false;
+    }
+    return true;
+  }
 
   static Scene errorMessage(Scene currScene, String message) {
     APP_TITLE = "ERROR!";
@@ -453,6 +508,24 @@ public class RunApplication extends Application {
 
     return new Scene(root, WINDOW_WIDTH , WINDOW_HEIGHT);
 
+  }
+  
+  static Scene successMessage(Scene currScene, String message) {
+    APP_TITLE = "SUCCESS!";
+    primaryStage.setTitle(APP_TITLE);
+    Button back = new Button("Back");
+    back.setOnAction(e -> primaryStage.setScene(currScene));
+    BorderPane root = new BorderPane();
+    HBox box = new HBox();
+    Label errorMessage = new Label(message);
+    box.getChildren().add(errorMessage);
+    root.setCenter(box);
+    root.setBottom(back);
+    back.setTranslateX(WINDOW_WIDTH/2 );
+    errorMessage.setTranslateY(WINDOW_HEIGHT/2 );
+    errorMessage.setTranslateX(WINDOW_WIDTH*3/10);
+
+    return new Scene(root, WINDOW_WIDTH , WINDOW_HEIGHT);
   }
 
 }

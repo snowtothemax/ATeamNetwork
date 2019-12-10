@@ -24,7 +24,7 @@ public interface GraphADT {
      * 
      * @param vertex the vertex to be added
      */
-    public void addVertex(String vertex);
+    public boolean addVertex(String vertex);
 
     
     /**
@@ -41,7 +41,7 @@ public interface GraphADT {
      *  
      * @param vertex the vertex to be removed
      */
-    public void removeVertex(String vertex);
+    public boolean removeVertex(String vertex);
 
     
     /**
@@ -63,7 +63,7 @@ public interface GraphADT {
      * @param vertex1 the first vertex (src)
      * @param vertex2 the second vertex (dst)
      */
-    public void addEdge(String vertex1, String vertex2);
+    public boolean addEdge(String vertex1, String vertex2);
 
     
     /**
@@ -81,7 +81,7 @@ public interface GraphADT {
      * @param vertex1 the first vertex
      * @param vertex2 the second vertex
      */
-    public void removeEdge(String vertex1, String vertex2);
+    public boolean removeEdge(String vertex1, String vertex2);
     
         
     /**

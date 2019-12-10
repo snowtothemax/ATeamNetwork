@@ -111,7 +111,7 @@ public class Controller {
                         if (command.length == 3) {
                             removeFriend(command[1], command[2]);
                         }else {
-                            removeUser(command[1]);
+                            RemoveUser(command[1]);
                         }
                         break;
                     case 's':
@@ -138,8 +138,9 @@ public class Controller {
         return file;
     }
 
-    public void addUser(String name) {
-        userNetwork.addVertex(name);
+    public boolean addUser(String name) {
+      
+     boolean result = userNetwork.addVertex(name);
        
         String str = "a " + name + "\n";
         try {
@@ -148,21 +149,23 @@ public class Controller {
         }catch (IOException e) {
             //ERROR
         }
-        // TODO
-    }
-   
-    public void removeUser(String name) {
-        userNetwork.removeVertex(name);
-       
-        String str = "r " + name + "\n";
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-            writer.write(str);
-        }catch (IOException e) {
-            //ERROR
-        }
+      return result;
     }
     
+    public boolean RemoveUser(String name) {
+      
+      boolean result = userNetwork.removeVertex(name);
+        
+         String str = "r " + name + "\n";
+         try {
+             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+             writer.write(str);
+         }catch (IOException e) {
+             //ERROR
+         }
+       return result;
+     }
+   
     List<String> getMutualFriends(String user1, String user2){
       
       List<String> mutualFriends;
