@@ -1,19 +1,25 @@
 package application;
+
 import application.Model;
 
 import java.io.FileInputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -30,12 +36,13 @@ public class RunApplication extends Application {
 	private static final int WINDOW_WIDTH = 600;
 	private static final int WINDOW_HEIGHT = 600;
 	static String APP_TITLE = "Welcome!";
-	private static Stage primaryStage;
+	static Stage primaryStage;
+	static Controller controller = new Controller();
 
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle(APP_TITLE);
@@ -99,7 +106,7 @@ public class RunApplication extends Application {
 		Button exportNtwrkFile = new Button("Export Network File");
 		exportNtwrkFile.setOnAction(e -> primaryStage.setScene(RunApplication.ExportFile()));
 		Button viewNetwork = new Button("View Network");
-		viewNetwork.setOnAction(e -> Controller.printNetwork());
+		viewNetwork.setOnAction(e -> primaryStage.setScene(RunApplication.centralUserOptions()));
 
 		// TextField to be added to the right side of the scene. This input and the
 		// input from "user1" will have the option of either adding a friendship
@@ -126,13 +133,13 @@ public class RunApplication extends Application {
 		addFriend.setOnAction(e -> {
 			String u1 = user1.getText();
 			String u2 = user2.getText();
-			Controller.addFriend(u1, u2);
+			controller.addFriend(u1, u2);
 		});
 		Button removeFriend = new Button("Remove Friendship");
 		removeFriend.setOnAction(e -> {
 			String u1 = user1.getText();
 			String u2 = user2.getText();
-			Controller.removeFriend(u1, u2);
+			controller.removeFriend(u1, u2);
 		});
 
 		// Positions the bottom buttons correctly onto the scene
@@ -170,13 +177,13 @@ public class RunApplication extends Application {
 		Button newCntrlUsr = new Button("Add this central user");
 		newCntrlUsr.setOnAction(e -> {
 			String user = txtFld.getText();
-			Controller.setCentralUser(user);
+			controller.setCentralUser(user);
 		});
 
-		Button display = new Button("Display Network from the View of the Central User");
+		Button display = new Button("Display Network");
 		display.setOnAction(e -> {
 			String user = txtFld.getText();
-			Controller.printCtrlNetwork(user);
+			controller.printCtrlNetwork(user);
 		});
 
 		HBox top = new HBox();
@@ -187,19 +194,14 @@ public class RunApplication extends Application {
 		txtFld.setPrefWidth(WINDOW_WIDTH / 2);
 		newCntrlUsr.setTranslateX(WINDOW_WIDTH * 3 / 8 - 300);
 		newCntrlUsr.setTranslateY(WINDOW_HEIGHT / 4 + 45);
+		display.setTranslateX(WINDOW_WIDTH * 3 / 8 - 416);
+		display.setTranslateY(WINDOW_HEIGHT / 4 + 80);
 
-		top.getChildren().addAll(txtFld, newCntrlUsr);
-
+		top.getChildren().addAll(txtFld, newCntrlUsr, display);
 		root.setTop(top);
 
 		HBox bottom = new HBox();
-
 		bottom.setPrefHeight(WINDOW_HEIGHT / 2);
-
-		display.setTranslateX(WINDOW_WIDTH / 2 - 140);
-
-		bottom.getChildren().add(display);
-		root.setBottom(bottom);
 
 		Button back = new Button("Back");
 		back.setTranslateX(WINDOW_WIDTH / 2);
@@ -215,7 +217,7 @@ public class RunApplication extends Application {
 		APP_TITLE = "Welcome to Export File!";
 		primaryStage.setTitle(APP_TITLE);
 		Button exp = new Button("Export to File");
-		exp.setOnAction(e -> Controller.exportFile());
+		exp.setOnAction(e -> controller.exportFile());
 
 		TextField txt = new TextField("Enter the exact path of the file you'd like to export to");
 
@@ -281,7 +283,7 @@ public class RunApplication extends Application {
 
 		// creates the button to finish the task of uploading the network file.
 		Button upload = new Button("Upload File");
-		upload.setOnAction(e -> Controller.importFile("null"));
+		upload.setOnAction(e -> controller.importFile("null"));
 		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
 
 		box.getChildren().addAll(instruc, address, upload);
@@ -305,7 +307,10 @@ public class RunApplication extends Application {
 		BorderPane root = new BorderPane();
 
 		Button done = new Button("ADD");
-		done.setOnAction(e -> Controller.addUser());
+		done.setOnAction(e -> {
+			String user = txt.getText();
+			controller.addUser(user);
+		});
 
 		Button back = new Button("Back");
 		back.setTranslateX(WINDOW_WIDTH / 2);
@@ -341,6 +346,20 @@ public class RunApplication extends Application {
 
 	}
 
-	
+	static Scene Network(List friends) {
+		APP_TITLE = "Welcome to Friend Network!";
+		primaryStage.setTitle(APP_TITLE);
+		BorderPane root = new BorderPane();
+		ListView network = new ListView(FXCollections.observableList(Arrays.asList(friends)));
+		network.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				controller.setCentralUser((String) network.getSelectionModel().getSelectedItem());
+			}
+
+		});
+		root.getChildren().add(network);
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
 
 }
