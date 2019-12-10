@@ -20,6 +20,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -284,7 +285,7 @@ public class RunApplication extends Application {
 
 		// creates the button to finish the task of uploading the network file.
 		Button upload = new Button("Upload File");
-		upload.setOnAction(e -> controller.importFile("null",primaryStage));
+		upload.setOnAction(e -> controller.importFile("null", primaryStage));
 		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
 
 		box.getChildren().addAll(instruc, address, upload);
@@ -347,13 +348,13 @@ public class RunApplication extends Application {
 
 	}
 
-	static Scene Network(List friends) {
+	static Scene Network(List<String> friends) {
 		String User = controller.getCentralUser(); // current central user
 		APP_TITLE = "Welcome to Friend Network of " + User;
 
 		primaryStage.setTitle(APP_TITLE);
 		BorderPane root = new BorderPane();
-		ListView network = new ListView<>();
+		ListView<String> network = new ListView<>();
 		ObservableList<String> items = FXCollections.observableArrayList(friends);
 		network.setItems(items);
 		network.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -374,9 +375,15 @@ public class RunApplication extends Application {
 
 		});
 		root.setTop(network);
+		
+		Button back = new Button("Back");
+		back.setOnAction(e -> primaryStage.setScene(centralUserOptions()));
+		back.setTranslateX(WINDOW_WIDTH/2);
+		root.setBottom(back);
+		
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
-	
+
 	static Scene errorMessage(Scene currScene, String message) {
 		APP_TITLE = "ERROR!";
 		primaryStage.setTitle(APP_TITLE);
@@ -388,11 +395,11 @@ public class RunApplication extends Application {
 		box.getChildren().add(errorMessage);
 		root.setCenter(box);
 		root.setBottom(back);
-		back.setTranslateX(WINDOW_WIDTH/8);
-		errorMessage.setTranslateY(WINDOW_HEIGHT/8);
-		
-		return new Scene(root, WINDOW_WIDTH/2, WINDOW_HEIGHT/4);
-		
+		back.setTranslateX(WINDOW_WIDTH / 8);
+		errorMessage.setTranslateY(WINDOW_HEIGHT / 8);
+
+		return new Scene(root, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4);
+
 	}
 
 }
