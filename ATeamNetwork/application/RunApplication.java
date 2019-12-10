@@ -130,13 +130,13 @@ public class RunApplication extends Application {
 		addFriend.setOnAction(e -> {
 			String u1 = user1.getText();
 			String u2 = user2.getText();
-			Driver.addFriend(u1, u2);
+			Controller.addFriend(u1, u2);
 		});
 		Button removeFriend = new Button("Remove Friendship");
 		removeFriend.setOnAction(e -> {
 			String u1 = user1.getText();
 			String u2 = user2.getText();
-			Driver.removeFriend(u1, u2);
+			Controller.removeFriend(u1, u2);
 		});
 
 		// Positions the bottom buttons correctly onto the scene
@@ -177,13 +177,13 @@ public class RunApplication extends Application {
 		Button newCntrlUsr = new Button("Add this central user");
 		newCntrlUsr.setOnAction(e -> {
 			String user = txtFld.getText();
-			Driver.setCentralUser(user);
+			Controller.setCentralUser(user);
 		});
 
 		Button display = new Button("Display Network from the View of the Central User");
 		display.setOnAction(e -> {
 			String user = txtFld.getText();
-			Driver.printCtrlNetwork(user);
+			Controller.printCtrlNetwork(user);
 		});
 
 		HBox top = new HBox();
@@ -223,7 +223,7 @@ public class RunApplication extends Application {
 		APP_TITLE = "Welcome to Export File!";
 
 		Button exp = new Button("Export to File");
-		exp.setOnAction(e -> Driver.exportFile());
+		exp.setOnAction(e -> Controller.exportFile());
 
 		TextField txt = new TextField("Enter the exact path of the file you'd like to export to");
 
@@ -289,7 +289,7 @@ public class RunApplication extends Application {
 
 		// creates the button to finish the task of uploading the network file.
 		Button upload = new Button("Upload File");
-		upload.setOnAction(e -> Driver.importFile());
+		upload.setOnAction(e -> Controller.importFile());
 		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
 
 		box.getChildren().addAll(instruc, address, upload);
@@ -313,7 +313,7 @@ public class RunApplication extends Application {
 		BorderPane root = new BorderPane();
 
 		Button done = new Button("ADD");
-		done.setOnAction(e -> Driver.addUser());
+		done.setOnAction(e -> Controller.addUser());
 
 		HBox h = new HBox();
 		VBox V = new VBox();
@@ -336,6 +336,8 @@ public class RunApplication extends Application {
 
 		h.getChildren().addAll(label);
 		V.getChildren().addAll(txt, done);
+		Button back = new Button("Back");
+        back.setTranslateX(WINDOW_WIDTH / 2);
 
 		root.setTop(h);
 		root.setCenter(V);
