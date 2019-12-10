@@ -3,6 +3,7 @@ package application;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
+import java.util.Set;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +54,9 @@ public class Controller {
         RunApplication.primaryStage.setScene(RunApplication.Network(friends));
     }
 
-    public void addFriend(String user1, String user2) {
+    public boolean addFriend(String user1, String user2) {
         //Since the implemented graph is directed, an edge must be added both ways
-        userNetwork.addEdge(user1, user2);
+     boolean result =   userNetwork.addEdge(user1, user2);
         userNetwork.addEdge(user2, user1);
 
         String str = "a " + user1 + " " + user2 + "\n";
@@ -66,13 +67,14 @@ public class Controller {
             //ERROR
         }
 
-
-
+        return result;
     }
 
-    public void removeFriend(String user1, String user2) {
+    public boolean removeFriend(String user1, String user2) {
         //Remove the undirected edge from between the two users.
-        userNetwork.removeEdge(user1,user2);
+      
+      
+      boolean result=  userNetwork.removeEdge(user1,user2);
         userNetwork.removeEdge(user2, user1);
 
         String str = "r " + user1 + " " + user2 + "\n";
@@ -82,6 +84,8 @@ public class Controller {
         }catch (IOException e) {
             //ERROR
         }
+        
+        return result;
     }
 
     public void importFile(String filePath, Stage primaryStage) {
