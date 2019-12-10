@@ -1,5 +1,5 @@
 package application;
-import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.Set;
@@ -12,28 +12,28 @@ import java.io.IOException;
 
 import application.Graph;
 import application.RunApplication;
+import javafx.stage.Stage;
 
 
-
-public class Controller{
-    
+public class Controller {
+   
     private Graph userNetwork;
     private String centralUser;
     private File file;
-    
+   
     public Controller() {
         userNetwork = new Graph();
         this.file = new File("log.txt");
     }
-    
+   
     public Controller(String fileName) {
         userNetwork = new Graph();
-        this.file = new File(fileName); 
+        this.file = new File(fileName);
     }
-    
+   
     public void setCentralUser(String user) {
         this.centralUser = user;
-        
+       
         String str = "s " + user + "\n";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -42,6 +42,10 @@ public class Controller{
             //ERROR
         }
         // TODO
+    }
+   
+    public String getCentralUser() {
+    return centralUser;
     }
 
     public void printCtrlNetwork(String user) {
@@ -53,7 +57,7 @@ public class Controller{
         //Since the implemented graph is directed, an edge must be added both ways
         userNetwork.addEdge(user1, user2);
         userNetwork.addEdge(user2, user1);
-        
+       
         String str = "a " + user1 + " " + user2 + "\n";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -61,16 +65,16 @@ public class Controller{
         }catch (IOException e) {
             //ERROR
         }
-        
-        
+       
+       
 
     }
-    
+   
     public void removeFriend(String user1, String user2) {
         //Remove the undirected edge from between the two users.
         userNetwork.removeEdge(user1,user2);
         userNetwork.removeEdge(user2, user1);
-        
+       
         String str = "r " + user1 + " " + user2 + "\n";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -80,7 +84,7 @@ public class Controller{
         }
     }
 
-    public void importFile(String filePath) {
+    public void importFile(String filePath, Stage primaryStage) {
         try {
             Scanner readFile = new Scanner(new File(filePath));
             ArrayList<String[]> commands = new ArrayList<String[]>();
@@ -89,11 +93,11 @@ public class Controller{
                 commands.add(line.split(" "));
             }
             for (int i = 0; i < commands.size(); i++) {
+            String error = "ERROR: The input file was not formatted correctly. Look at line " + i + " of the input file.";
                 String[] command = commands.get(i);
                 if (command.length < 2 || command.length > 3) {
-                    //TODO
-                    //ERROR
-                    
+                    primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(), error));
+                    break;
                 }
                 switch (command[0].charAt(0)) {
                     case 'a':
@@ -114,14 +118,14 @@ public class Controller{
                         setCentralUser(command[1]);
                         break;
                     default:
-                        //TODO
-                        //ERROR
+                    primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(),error));
                         break;
-                            
+                           
                 }
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(), "ERROR: The input file was not formatted correctly. Look at line " + 0 + " of the input file."));
+            return;
         }
         return;
     }
@@ -136,7 +140,7 @@ public class Controller{
 
     public void addUser(String name) {
         userNetwork.addVertex(name);
-        
+       
         String str = "a " + name + "\n";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -146,23 +150,17 @@ public class Controller{
         }
         // TODO
     }
-    
+   
     public void removeUser(String name) {
         userNetwork.removeVertex(name);
-        
+       
         String str = "r " + name + "\n";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(str);
-           writer.flush();
-           
         }catch (IOException e) {
             //ERROR
         }
-    }
-    
-    public void clearNetwork() {
-        userNetwork = new Graph();
     }
     
     List<String> getMutualFriends(String user1, String user2){
@@ -184,10 +182,8 @@ public class Controller{
       
       return mutualFriends;
     }
-    
-    
-    String getCentralUser() {
-      return this.centralUser;
+   
+    public void clearNetwork() {
+        userNetwork = new Graph();
     }
-    
 }
