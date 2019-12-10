@@ -194,4 +194,8 @@ public class Controller {
         userNetwork = new Graph();
     }
     
+    Set<String> getAllUsers(){
+      return userNetwork.getAllVertices();
+    }
+    
 }

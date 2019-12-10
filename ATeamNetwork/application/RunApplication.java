@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.Set;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -197,6 +197,14 @@ public class RunApplication extends Application {
     primaryStage.setTitle(APP_TITLE);
     BorderPane root = new BorderPane();
 
+    Set<String> users = controller.getAllUsers();
+    
+    List<String> aList = new ArrayList<String>();
+    
+    aList.addAll(users);
+    
+    
+    
     TextField txtFld = new TextField("  Enter the User you'd like to make the Central User");
 
     Button newCntrlUsr = new Button("Add this central user");
