@@ -347,18 +347,27 @@ public class RunApplication extends Application {
 	}
 
 	static Scene Network(List friends) {
-		APP_TITLE = "Welcome to Friend Network!";
+		String User = controller.getCentralUser();
+		APP_TITLE = "Welcome to Friend Network of " + User;
+
 		primaryStage.setTitle(APP_TITLE);
 		BorderPane root = new BorderPane();
-		ListView network = new ListView(FXCollections.observableList(Arrays.asList(friends)));
+		ListView network = new ListView<>();
+		ObservableList<String> items = FXCollections.observableArrayList(friends);
+		network.setItems(items);
 		network.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				controller.setCentralUser((String) network.getSelectionModel().getSelectedItem());
+				String centralUser = (String) network.getSelectionModel().getSelectedItem();
+				if (centralUser.compareTo(controller.getCentralUser()) != 0) {
+					controller.setCentralUser(centralUser);
+					controller.printCtrlNetwork(centralUser);
+				}
+
 			}
 
 		});
-		root.getChildren().add(network);
+		root.setTop(network);
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 	
