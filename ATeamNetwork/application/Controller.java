@@ -148,6 +148,11 @@ public class Controller {
 	public boolean addUser(String name) {
 
 		boolean result = userNetwork.addVertex(name);
+		
+		if(centralUser == null)
+		this.setCentralUser(name);
+		
+		
 
 		String str = "a " + name + "\n";
 		try {
