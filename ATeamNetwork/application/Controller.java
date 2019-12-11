@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 import application.Graph;
 import application.RunApplication;
@@ -89,16 +90,14 @@ public class Controller {
 
 	public void importFile(String filePath, Stage primaryStage) {
 		try {
-			Scanner readFile = new Scanner(new File(filePath));
+			File file = new File(filePath);
+			Scanner readFile = new Scanner(file, StandardCharsets.UTF_8.name());
 			ArrayList<String[]> commands = new ArrayList<String[]>();
 			while (readFile.hasNextLine()) {
+				String error = "ERROR: One of the commands in the file was not formatted correctly.";
 				String line = readFile.nextLine();
-				commands.add(line.split(" "));
-			}
-			for (int i = 0; i < commands.size(); i++) {
-				String error = "ERROR: The input file was not formatted correctly. Look at line " + i
-						+ " of the input file.";
-				String[] command = commands.get(i);
+				String[] command = line.split(" ");
+				System.out.println(command[0] + command[1]);
 				if (command.length < 2 || command.length > 3) {
 					primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(), error));
 					break;
@@ -121,15 +120,13 @@ public class Controller {
 				case 's':
 					setCentralUser(command[1]);
 					break;
-				default:
-					primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(), error));
-					break;
 
 				}
 			}
+			readFile.close();
 		} catch (FileNotFoundException e) {
 			primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(),
-					"ERROR: The input file was not formatted correctly. Look at line " + 0 + " of the input file."));
+					"ERROR: The inputFile was not found."));
 			return;
 		}
 		return;

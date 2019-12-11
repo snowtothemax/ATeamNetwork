@@ -321,7 +321,7 @@ public class RunApplication extends Application {
 
 		// creates the button to finish the task of uploading the network file.
 		Button upload = new Button("Upload File");
-		upload.setOnAction(e -> controller.importFile("null", primaryStage));
+		upload.setOnAction(e -> controller.importFile(address.getText(), primaryStage));
 		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
 
 		box.getChildren().addAll(instruc, address, upload);
@@ -441,10 +441,10 @@ public class RunApplication extends Application {
 		Image img = new Image(input);
 		ImageView imgView = new ImageView();
 		VBox leftSide = new VBox();
-		Label userName = new Label(User);
+		Label userName = new Label("Name: "+ User);
 		userName.setStyle("-fx-background-color: white; "
 				+ "-fx-text-fill: black; "
-				+ "-fx-font-size: 10; "
+				+ "-fx-font-size: 15; "
 				+ "-fx-font-family: courier");
 		imgView.setImage(img);
 		leftSide.getChildren().addAll(imgView,userName);
@@ -467,6 +467,7 @@ public class RunApplication extends Application {
 				+ "-fx-font-family: courier");
 		right.getChildren().addAll(friendsLabel,network);
 		root.setCenter(right);
+		
 		Button back = new Button("Back");
 		back.setOnAction(e -> primaryStage.setScene(centralUserOptions()));
 		back.setTranslateX(WINDOW_WIDTH / 2);
