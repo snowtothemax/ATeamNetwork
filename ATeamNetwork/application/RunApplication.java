@@ -25,6 +25,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 // TODO: add return buttons to all sub-scenes
@@ -66,10 +67,12 @@ public class RunApplication extends Application {
     // User Options
     Button ctrlUsrOp = new Button("Central User Options");
     ctrlUsrOp.setOnAction(e -> primaryStage.setScene(RunApplication.centralUserOptions()));
+   
 
     // sets the position of the button ctrlUsrOp
     ctrlUsrOp.setTranslateX(WINDOW_WIDTH * 5 / 12);
     ctrlUsrOp.setTranslateY(WINDOW_HEIGHT / 12);
+    ctrlUsrOp.setAlignment(Pos.BASELINE_CENTER);
     top.getChildren().add(ctrlUsrOp);
 
     // sets the Hbox "top" to the top of the main BoderPane
@@ -208,7 +211,7 @@ public class RunApplication extends Application {
     
     TextField txtFld = new TextField("  Enter the User you'd like to make the Central User");
 
-    Button newCntrlUsr = new Button("Set this user as the central user");
+    Button newCntrlUsr = new Button("Set as central user");
     newCntrlUsr.setOnAction(e -> {
       String user = txtFld.getText();
       controller.setCentralUser(user);
