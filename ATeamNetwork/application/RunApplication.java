@@ -1,4 +1,3 @@
-
 package application;
 
 import java.io.FileInputStream;
@@ -14,7 +13,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -23,13 +21,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
-// TODO: add return buttons to all sub-scenes
 
 public class RunApplication extends Application {
 	// store any command-line arguments that were entered.
@@ -74,10 +68,10 @@ public class RunApplication extends Application {
 		ctrlUsrOp.setOnAction(e -> primaryStage.setScene(RunApplication.centralUserOptions()));
 
 		// sets the position of the button ctrlUsrOp
-		ctrlUsrOp.setTranslateX(WINDOW_WIDTH * 3 / 12);
+		ctrlUsrOp.setTranslateX(WINDOW_WIDTH / 8);
 		ctrlUsrOp.setTranslateY(WINDOW_HEIGHT / 12);
+		displayAll.setTranslateX(WINDOW_WIDTH / 5);
 		displayAll.setTranslateY(WINDOW_HEIGHT / 12);
-		displayAll.setTranslateX(WINDOW_WIDTH * 30 / 100);
 		top.getChildren().addAll(ctrlUsrOp, displayAll);
 
 		// sets the Hbox "top" to the top of the main BoderPane
@@ -104,10 +98,10 @@ public class RunApplication extends Application {
 		// correct areas on the screen
 
 		// Translates the uploadNtwrkFile button to its position in the screen
-		uploadNtwrkFile.setTranslateX(WINDOW_WIDTH / 5);
+		uploadNtwrkFile.setTranslateX(WINDOW_WIDTH / 8);
 
 		// Translates the addNewUser button to its correct position on the screen
-		addNewUser.setTranslateX(WINDOW_WIDTH / 5);
+		addNewUser.setTranslateX(WINDOW_WIDTH / 8);
 		addNewUser.setTranslateY(WINDOW_HEIGHT / 10);
 
 		// Translates the user1 TextField to its correct position on the screen
@@ -128,8 +122,8 @@ public class RunApplication extends Application {
 		TextField user2 = new TextField("Enter User 2...");
 
 		// Positions the above buttons to their correct positions on the screen
-		exportNtwrkFile.setTranslateX(WINDOW_WIDTH / 8); // Positions the exportNtwrkFile button
-		viewNetwork.setTranslateX(WINDOW_WIDTH / 8);
+		exportNtwrkFile.setTranslateX(WINDOW_WIDTH / 8 - 42); // Positions the exportNtwrkFile button
+		viewNetwork.setTranslateX(WINDOW_WIDTH / 8 - 42);
 		viewNetwork.setTranslateY(WINDOW_HEIGHT / 10);// Positons the viewNetwork button
 		user2.setTranslateY(WINDOW_HEIGHT / 4);// positions the user2 TextField to its correct position
 
@@ -185,11 +179,11 @@ public class RunApplication extends Application {
 		});
 
 		// Positions the bottom buttons correctly onto the scene
-		addFriend.setTranslateX(WINDOW_WIDTH * 5 / 12);// Sets the addFriend button to the center of the
-														// screen
-		removeFriend.setTranslateX(WINDOW_WIDTH * 5 / 12); // sets the removeFriend button below the
-															// addFriend button
-		mutualButton.setTranslateX(WINDOW_WIDTH * 5 / 12);
+		addFriend.setTranslateX(WINDOW_WIDTH / 3);// Sets the addFriend button to the center of the
+													// screen
+		removeFriend.setTranslateX(WINDOW_WIDTH / 3); // sets the removeFriend button below the
+														// addFriend button
+		mutualButton.setTranslateX(WINDOW_WIDTH / 3);
 		// adds the buttons to the HBox bottom.
 		bottom.getChildren().addAll(addFriend, removeFriend, mutualButton);
 
@@ -231,7 +225,7 @@ public class RunApplication extends Application {
 			box.getChildren().add(errorMessage);
 			root.setCenter(box);
 			root.setBottom(back);
-			back.setTranslateX(WINDOW_WIDTH / 2);
+			back.setTranslateX(WINDOW_WIDTH / 3);
 			errorMessage.setTranslateY(WINDOW_HEIGHT / 2);
 			errorMessage.setTranslateX(WINDOW_WIDTH * 3 / 10);
 
@@ -251,15 +245,12 @@ public class RunApplication extends Application {
 			box.getChildren().add(errorMessage);
 			root.setCenter(box);
 			root.setBottom(back);
-			back.setTranslateX(WINDOW_WIDTH / 2);
+			back.setTranslateX(WINDOW_WIDTH / 3);
 			errorMessage.setTranslateY(WINDOW_HEIGHT / 2);
 			errorMessage.setTranslateX(WINDOW_WIDTH * 3 / 10);
 
 			return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 		}
-
-		ComboBox combo_box = new ComboBox(FXCollections
-				.observableArrayList(controller.userNetwork.getAllVertices().remove(controller.getCentralUser())));
 
 		Button newCntrlUsr = new Button("Add Central User");
 		newCntrlUsr.setOnAction(e -> {
@@ -279,9 +270,9 @@ public class RunApplication extends Application {
 		txtFld.setTranslateX(WINDOW_WIDTH * 3 / 8 - 75);
 		txtFld.setTranslateY(WINDOW_HEIGHT / 4);
 		txtFld.setPrefWidth(WINDOW_WIDTH / 2);
-		newCntrlUsr.setTranslateX(WINDOW_WIDTH * 3 / 8 - 300);
+		newCntrlUsr.setTranslateX(WINDOW_WIDTH / 8 - 140);
 		newCntrlUsr.setTranslateY(WINDOW_HEIGHT / 4 + 45);
-		display.setTranslateX(WINDOW_WIDTH * 3 / 8 - 416);
+		display.setTranslateX(WINDOW_WIDTH / 8 - 310);
 		display.setTranslateY(WINDOW_HEIGHT / 4 + 80);
 
 		top.getChildren().addAll(txtFld, newCntrlUsr, display);
@@ -291,7 +282,7 @@ public class RunApplication extends Application {
 		bottom.setPrefHeight(WINDOW_HEIGHT / 2);
 
 		Button back = new Button("Back");
-		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setTranslateX(WINDOW_WIDTH / 3);
 		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
 
 		root.setBottom(back);
@@ -318,7 +309,7 @@ public class RunApplication extends Application {
 		txt.setTranslateY(WINDOW_HEIGHT / 2 - 30);
 
 		exp.setTranslateY(WINDOW_HEIGHT / 2);
-		exp.setTranslateX(WINDOW_WIDTH / 2 - 475);
+		exp.setTranslateX(WINDOW_WIDTH / 8 - 300);
 
 		h.getChildren().addAll(txt, exp);
 
@@ -327,7 +318,7 @@ public class RunApplication extends Application {
 		exp.setOnAction(e -> controller.exportFile(txt.getText()));
 
 		Button back = new Button("Back");
-		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setTranslateX(WINDOW_WIDTH / 3 - 20);
 		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
 
 		root.setBottom(back);
@@ -373,12 +364,12 @@ public class RunApplication extends Application {
 		// creates the button to finish the task of uploading the network file.
 		Button upload = new Button("Upload File");
 		upload.setOnAction(e -> controller.importFile(address.getText(), primaryStage));
-		upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
+		upload.setTranslateX(WINDOW_WIDTH * 3 / 8 - 30);
 
 		box.getChildren().addAll(instruc, address, upload);
 
 		Button back = new Button("Back");
-		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setTranslateX(WINDOW_WIDTH / 3);
 		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
 		root.setBottom(back);
 
@@ -414,7 +405,7 @@ public class RunApplication extends Application {
 		});
 
 		Button back = new Button("Back");
-		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setTranslateX(WINDOW_WIDTH / 3);
 		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
 
 		HBox h = new HBox();
@@ -434,9 +425,9 @@ public class RunApplication extends Application {
 		txt.setTranslateY(WINDOW_HEIGHT / 8);
 
 		add.setTranslateY(WINDOW_HEIGHT / 8);
-		add.setTranslateX(WINDOW_WIDTH / 2);
+		add.setTranslateX(WINDOW_WIDTH / 3);
 
-		remove.setTranslateX(WINDOW_WIDTH / 2);
+		remove.setTranslateX(WINDOW_WIDTH / 3);
 		remove.setTranslateY(WINDOW_HEIGHT * 2 / 8);
 
 		h.getChildren().addAll(label);
@@ -531,6 +522,7 @@ public class RunApplication extends Application {
 
 		Button back = new Button("Back");
 		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
+		back.setTranslateX(WINDOW_WIDTH / 3);
 
 		if (mutualFriends == null) {
 			return errorMessage(RunApplication.firstScene(), "Error one of the users entered do not exist");
@@ -609,7 +601,7 @@ public class RunApplication extends Application {
 		box.getChildren().add(errorMessage);
 		root.setCenter(box);
 		root.setBottom(back);
-		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setTranslateX(WINDOW_WIDTH / 3);
 		errorMessage.setTranslateY(WINDOW_HEIGHT / 2);
 		errorMessage.setTranslateX(WINDOW_WIDTH * 3 / 10);
 
@@ -628,7 +620,7 @@ public class RunApplication extends Application {
 		box.getChildren().add(errorMessage);
 		root.setCenter(box);
 		root.setBottom(back);
-		back.setTranslateX(WINDOW_WIDTH / 2);
+		back.setTranslateX(WINDOW_WIDTH / 3);
 		errorMessage.setTranslateY(WINDOW_HEIGHT / 2);
 		errorMessage.setTranslateX(WINDOW_WIDTH * 3 / 10);
 
@@ -641,6 +633,7 @@ public class RunApplication extends Application {
 
 		Button back = new Button("Back");
 		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
+		back.setTranslateX(WINDOW_WIDTH / 8 - 140);
 
 		ArrayList<String> users = new ArrayList<String>();
 
