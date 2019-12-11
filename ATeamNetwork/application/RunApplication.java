@@ -36,7 +36,7 @@ public class RunApplication extends Application {
 	// NOTE: this.getParameters().getRaw() will get these also
 	private List<String> args;
 
-	private static final int WINDOW_WIDTH = 600;
+	private static int WINDOW_WIDTH = 600;
 	private static final int WINDOW_HEIGHT = 600;
 	static String APP_TITLE = "Welcome!";
 	static Stage primaryStage;
@@ -400,9 +400,10 @@ public class RunApplication extends Application {
 	}
 
 	static Scene Network(List<String> friends) {
+		try {
 		String User = controller.getCentralUser(); // current central user
 		APP_TITLE = "Welcome to Friend Network of " + User;
-
+		WINDOW_WIDTH=590;
 		primaryStage.setTitle(APP_TITLE);
 		BorderPane root = new BorderPane();
 		ListView<String> network = new ListView<>();
@@ -425,19 +426,57 @@ public class RunApplication extends Application {
 			}
 
 		});
-		root.setTop(network);
-		network.setTranslateX(WINDOW_WIDTH / 2);
+		// Creates a VBox for the top of the Screen that adds a network picture, and the FriendsList
+		VBox top = new VBox();
+		top.setPrefWidth(WINDOW_WIDTH);
+		top.setPrefHeight(123);
+		FileInputStream topImg = new FileInputStream("facebookStrip.gif");
+		Image topStrip = new Image(topImg);
+		ImageView topLabel = new ImageView();
+		topLabel.setImage(topStrip);
+		top.getChildren().add(topLabel);
+		root.setTop(top);
+		
 		FileInputStream input = new FileInputStream("profilePicture.png");
 		Image img = new Image(input);
-		ImageView imgView = new ImageView(img);
-		root.setLeft(imgView);
-
+		ImageView imgView = new ImageView();
+		VBox leftSide = new VBox();
+		Label userName = new Label(User);
+		userName.setStyle("-fx-background-color: white; "
+				+ "-fx-text-fill: black; "
+				+ "-fx-font-size: 10; "
+				+ "-fx-font-family: courier");
+		imgView.setImage(img);
+		leftSide.getChildren().addAll(imgView,userName);
+		leftSide.setPrefWidth(WINDOW_WIDTH/2);
+		userName.setPrefWidth(200);
+		leftSide.setPrefHeight(WINDOW_HEIGHT);
+		root.setLeft(leftSide);
+		
+		VBox right = new VBox();
+		right.setPrefWidth(WINDOW_WIDTH/2);
+		right.setPrefHeight(WINDOW_HEIGHT);
+		Label friendsLabel = new Label("Friends List");
+		friendsLabel.setStyle("-fx-background-color: white; "
+				+ "-fx-text-fill: black; "
+				+ "-fx-font-size: 25; "
+				+ "-fx-font-family: courier");
+		network.setStyle("-fx-background-color: white; "
+				+ "-fx-text-fill: black; "
+				+ "-fx-font-size: 20; "
+				+ "-fx-font-family: courier");
+		right.getChildren().addAll(friendsLabel,network);
+		root.setCenter(right);
 		Button back = new Button("Back");
 		back.setOnAction(e -> primaryStage.setScene(centralUserOptions()));
 		back.setTranslateX(WINDOW_WIDTH / 2);
 		root.setBottom(back);
+		root.setStyle("-fx-background-color: white; ");
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+		}catch(FileNotFoundException e){
+			return(errorMessage(Network(null), "ERROR: File for Image not Found."));
+		}
 	}
 
 	static Scene displayMutualFriends(List<String> mutualFriends, String user1, String user2) {
