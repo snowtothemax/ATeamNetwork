@@ -19,9 +19,9 @@ import javafx.stage.Stage;
 
 public class Controller {
 
-	 Graph userNetwork;
-	 String centralUser;
-	 File file;
+	Graph userNetwork;
+	private String centralUser;
+	private File file;
 
 	public Controller() {
 		userNetwork = new Graph();
@@ -40,6 +40,7 @@ public class Controller {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			writer.write(str);
+			writer.close();
 		} catch (IOException e) {
 			// ERROR
 		}
@@ -64,6 +65,7 @@ public class Controller {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			writer.write(str);
+			writer.close();
 		} catch (IOException e) {
 			// ERROR
 		}
@@ -81,6 +83,7 @@ public class Controller {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			writer.write(str);
+			writer.close();
 		} catch (IOException e) {
 			// ERROR
 		}
@@ -90,45 +93,47 @@ public class Controller {
 
 	public void importFile(String filePath, Stage primaryStage) {
 		try {
-			File file = new File(filePath);
-			Scanner readFile = new Scanner(file, StandardCharsets.UTF_8.name());
-			ArrayList<String[]> commands = new ArrayList<String[]>();
+			Scanner readFile = new Scanner(new File(filePath));
+			ArrayList<String[]> listCommands = new ArrayList<String[]>();
 			while (readFile.hasNextLine()) {
-				String error = "ERROR: One of the commands in the file was not formatted correctly.";
 				String line = readFile.nextLine();
-				String[] command = line.split(" ");
-				System.out.println(command[0] + command[1]);
+				String[] commands = line.split(" ");
+				listCommands.add(commands);
+			}
+			readFile.close();
+			for (int i = 0; i < listCommands.size(); i++) {
+				String error = "ERROR: The input file was not formatted correctly. Look at line " + i
+						+ " of the input file.";
+				String[] command = listCommands.get(i);
 				if (command.length < 2 || command.length > 3) {
 					primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(), error));
 					break;
 				}
-				switch (command[0].charAt(0)) {
-				case 'a':
-					if (command.length == 3) {
-						addFriend(command[1], command[2]);
-					} else {
+				char check = command[0].charAt(0);
+				if(check == 'a') {
+					if(command.length ==3) {
+						addFriend(command[1],command[2]);
+					}else {
 						addUser(command[1]);
 					}
-					break;
-				case 'r':
+				}else if(check == 'r') {
 					if (command.length == 3) {
 						removeFriend(command[1], command[2]);
 					} else {
 						RemoveUser(command[1]);
 					}
-					break;
-				case 's':
+				}else if(check == 's') {
 					setCentralUser(command[1]);
-					break;
-
+				}else {
+					
 				}
 			}
-			readFile.close();
 		} catch (FileNotFoundException e) {
 			primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(),
-					"ERROR: The inputFile was not found."));
+					"ERROR: The input file was not found"));
 			return;
 		}
+		System.out.println(userNetwork.getAllVertices().toString());
 		return;
 	}
 
@@ -150,6 +155,7 @@ public class Controller {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			writer.write(str);
+			writer.close();
 		} catch (IOException e) {
 			// ERROR
 		}
@@ -164,6 +170,7 @@ public class Controller {
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			writer.write(str);
+			writer.close();
 		} catch (IOException e) {
 			// ERROR
 		}
