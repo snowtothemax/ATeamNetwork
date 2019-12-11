@@ -32,7 +32,8 @@
   -fx-text-fill: black;
   -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
   -fx-pref-width: 215px;
-  -fx-alignment: center;
+  -fx-align: center;
+  
 }
 
 .text-field {
