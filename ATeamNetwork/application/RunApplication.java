@@ -212,7 +212,50 @@ public class RunApplication extends Application {
     primaryStage.setTitle(APP_TITLE);
     BorderPane root = new BorderPane();
 
-    TextField txtFld = new TextField("  Enter the User you'd like to make the Central User");
+    TextField txtFld = new TextField(" Enter the User you'd like to make the Central User");
+
+    ObservableList<String> users = FXCollections.observableArrayList(controller.userNetwork.getAllVertices());
+    
+    if(users.size() == 0) {
+      APP_TITLE = "No users dectected";
+      primaryStage.setTitle(APP_TITLE);
+      Button back = new Button("Back");
+      back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
+      
+      HBox box = new HBox();
+      Label errorMessage = new Label("The Social Network doesn't have any users. Please add users to contiue");
+      box.getChildren().add(errorMessage);
+      root.setCenter(box);
+      root.setBottom(back);
+      back.setTranslateX(WINDOW_WIDTH / 2);
+      errorMessage.setTranslateY(WINDOW_HEIGHT / 2);
+      errorMessage.setTranslateX(WINDOW_WIDTH * 3 / 10);
+
+      return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+    }
+    
+     users.remove(controller.getCentralUser());
+     
+     if(users.size() == 0) {
+       APP_TITLE = "Just 1 user detected!";
+       primaryStage.setTitle(APP_TITLE);
+       Button back = new Button("Back");
+       back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
+       
+       HBox box = new HBox();
+       Label errorMessage = new Label("The Social Network has only one user which is the Central User");
+       box.getChildren().add(errorMessage);
+       root.setCenter(box);
+       root.setBottom(back);
+       back.setTranslateX(WINDOW_WIDTH / 2);
+       errorMessage.setTranslateY(WINDOW_HEIGHT / 2);
+       errorMessage.setTranslateX(WINDOW_WIDTH * 3 / 10);
+
+       return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+     }
+    
+    ComboBox combo_box = new ComboBox(FXCollections.observableArrayList(controller.userNetwork.getAllVertices().remove(controller.getCentralUser())));
+    
 
     Button newCntrlUsr = new Button("Add Central User");
     newCntrlUsr.setOnAction(e -> {
