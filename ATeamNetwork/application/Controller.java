@@ -19,9 +19,9 @@ import javafx.stage.Stage;
 
 public class Controller {
 
-	private Graph userNetwork;
-	private String centralUser;
-	private File file;
+	 Graph userNetwork;
+	 String centralUser;
+	 File file;
 
 	public Controller() {
 		userNetwork = new Graph();
