@@ -1,0 +1,22 @@
+//This is an example JSON file that will be used to represent the network
+
+{
+	"network" : [
+		{
+			"user" : [
+				{
+					"name" : "Maxwell Johnson"
+					"friends" : ["Zoe Klein", "Jeff Epstein", "Emily Liebert", "Abhinav Kaushek", "Debra Deppler"]
+				},
+				{
+					"name" : "Zoe Klein"
+					"friends" : ["Emily Liebert", "Abhinav Kaushek", "Debra Deppler", "DumbDumb PooPoo"]
+				},
+				{
+					"name" : "BlindGuy McSqueezy"
+					"friends" : ["None"]
+				}
+				
+			]
+		}
+}
