@@ -30,11 +30,14 @@ public class RunApplication extends Application {
 	// NOTE: this.getParameters().getRaw() will get these also
 	private List<String> args;
 
+	/** instance fields */
+	//window width and height
 	private static int WINDOW_WIDTH = 600;
-	private static final int WINDOW_HEIGHT = 600;
+	private static final int WINDOW_HEIGHT = 700;
+	//First scene app title
 	static String APP_TITLE = "Welcome!";
-	static Stage primaryStage;
-	static Controller controller = new Controller();
+	static Stage primaryStage; //the primare stage
+	static Controller controller = new Controller();//the main controller
 
 	public static void main(String[] args) {
 		launch(args);
@@ -178,14 +181,22 @@ public class RunApplication extends Application {
 						"Error! Something must be inserted in both the text boxes"));
 		});
 
+		Button clearNetwork = new Button("Clear Network");
+		clearNetwork.setOnAction(e -> {
+			controller = new Controller();
+			primaryStage.setScene(successMessage(firstScene(), "SUCCESS: Network Cleared!"));
+		});
+
 		// Positions the bottom buttons correctly onto the scene
 		addFriend.setTranslateX(WINDOW_WIDTH / 3);// Sets the addFriend button to the center of the
 													// screen
 		removeFriend.setTranslateX(WINDOW_WIDTH / 3); // sets the removeFriend button below the
 														// addFriend button
 		mutualButton.setTranslateX(WINDOW_WIDTH / 3);
+
+		clearNetwork.setTranslateX(WINDOW_WIDTH / 3);
 		// adds the buttons to the HBox bottom.
-		bottom.getChildren().addAll(addFriend, removeFriend, mutualButton);
+		bottom.getChildren().addAll(addFriend, removeFriend, mutualButton, clearNetwork);
 
 		// Aligns all the boxes to their specified regions in the Main BorderPane
 		root.setTop(top);
@@ -215,53 +226,36 @@ public class RunApplication extends Application {
 		ObservableList<String> users = FXCollections.observableArrayList(controller.userNetwork.getAllVertices());
 
 		if (users.size() == 0) {
-			APP_TITLE = "No users dectected";
-			primaryStage.setTitle(APP_TITLE);
-			Button back = new Button("Back");
-			back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
-
-			HBox box = new HBox();
-			Label errorMessage = new Label("The Social Network doesn't have any users. Please add users to contiue");
-			box.getChildren().add(errorMessage);
-			root.setCenter(box);
-			root.setBottom(back);
-			back.setTranslateX(WINDOW_WIDTH / 3);
-			errorMessage.setTranslateY(WINDOW_HEIGHT / 2);
-			errorMessage.setTranslateX(WINDOW_WIDTH * 3 / 10);
-
-			return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+			return errorMessage(centralUserOptions(), "ERROR: The Social Network doesn't have any users. Please add users to contiue");
 		}
 
 		users.remove(controller.getCentralUser());
 
 		if (users.size() == 0) {
-			APP_TITLE = "Just 1 user detected!";
-			primaryStage.setTitle(APP_TITLE);
-			Button back = new Button("Back");
-			back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
-
-			HBox box = new HBox();
-			Label errorMessage = new Label("The Social Network has only one user which is the Central User");
-			box.getChildren().add(errorMessage);
-			root.setCenter(box);
-			root.setBottom(back);
-			back.setTranslateX(WINDOW_WIDTH / 3);
-			errorMessage.setTranslateY(WINDOW_HEIGHT / 2);
-			errorMessage.setTranslateX(WINDOW_WIDTH * 3 / 10);
-
-			return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+			return errorMessage(centralUserOptions(), "ERROR: The Social Network has only one user which is the Central User");
 		}
 
 		Button newCntrlUsr = new Button("Add Central User");
 		newCntrlUsr.setOnAction(e -> {
 			String user = txtFld.getText();
 			controller.setCentralUser(user);
+			if(controller.userNetwork.addVertex(user)) {
+				primaryStage.setScene(errorMessage(centralUserOptions(), "ERROR: input user does not exist."));
+				controller.userNetwork.removeVertex(user);
+			}else {
+			primaryStage.setScene(
+					successMessage(centralUserOptions(), "SUCCESS: " + user + " was set as the central user."));
+			}
 		});
 
 		Button display = new Button("Display Network");
 		display.setOnAction(e -> {
-			String user = txtFld.getText();
-			controller.printCtrlNetwork(user);
+			if (controller.getCentralUser() != null) {
+				controller.printCtrlNetwork(controller.getCentralUser());
+			} else {
+				primaryStage.setScene(
+						errorMessage(centralUserOptions(), "ERROR: There is no central user to display from."));
+			}
 		});
 
 		HBox top = new HBox();
@@ -633,7 +627,7 @@ public class RunApplication extends Application {
 
 		Button back = new Button("Back");
 		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
-		back.setTranslateX(WINDOW_WIDTH / 8 - 140);
+		back.setTranslateX(WINDOW_WIDTH / 2);
 
 		ArrayList<String> users = new ArrayList<String>();
 
@@ -644,21 +638,7 @@ public class RunApplication extends Application {
 		}
 
 		if (users.size() == 0) {
-			primaryStage.setTitle(APP_TITLE);
-			BorderPane root = new BorderPane();
-			HBox box = new HBox();
-			Label message = new Label("Oops! Doesn't look like you've added any users");
-			message.setTranslateX(WINDOW_WIDTH / 4);
-			message.setTranslateY(WINDOW_HEIGHT / 2);
-			box.getChildren().add(message);
-			root.setCenter(box);
-
-			HBox box2 = new HBox();
-			box2.setTranslateX(WINDOW_WIDTH * 4 / 9);
-			box2.getChildren().add(back);
-			root.setBottom(box2);
-
-			return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+			return errorMessage(firstScene(), "Oops! Looks like there are no users present in the network.");
 		}
 
 		primaryStage.setTitle(APP_TITLE);
@@ -668,12 +648,31 @@ public class RunApplication extends Application {
 		ObservableList<String> allUsers = FXCollections.observableArrayList(users);
 
 		ListView<String> listView = new ListView<String>(allUsers);
+		listView.setTranslateX(WINDOW_WIDTH / 2);
+		listView.setStyle("-fx-text-fill: black; " + "-fx-font-size: 25; ");
 
 		listView.setItems(allUsers);
 		root.setCenter(listView);
 		root.setBottom(back);
 
-		return new Scene(root, WINDOW_WIDTH * 2 / 3, WINDOW_HEIGHT);
+		root.setStyle("-fx-background-color: white; ");
+		listView.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				String user = (String) listView.getSelectionModel().getSelectedItem(); // selected user
+				if (event.getButton() == MouseButton.PRIMARY) { // left click
+
+					controller.setCentralUser(user);
+					controller.printCtrlNetwork(user);
+				} else if (event.getButton() == MouseButton.SECONDARY) { // right click
+					controller.RemoveUser(user);
+					primaryStage.setScene(displayAllUsers());
+				}
+			}
+
+		});
+
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	}
 

@@ -122,7 +122,7 @@ public class Controller {
 					if (command.length == 3) {
 						removeFriend(command[1], command[2]);
 					} else {
-						RemoveUser(command[1]);
+						removeUser(command[1]);
 					}
 				} else if (check == 's') {
 					setCentralUser(command[1]);
@@ -132,7 +132,7 @@ public class Controller {
 			}
 		} catch (FileNotFoundException e) {
 			primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(),
-					"ERROR: The input file was not found"));
+					"ERROR: The input file was not found."));
 			return;
 		}
 		primaryStage.setScene(
@@ -183,7 +183,7 @@ public class Controller {
 		return result;
 	}
 
-	public boolean RemoveUser(String name) {
+	public boolean removeUser(String name) {
 
 		boolean result = userNetwork.removeVertex(name);
 
