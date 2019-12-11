@@ -46,6 +46,7 @@ public class RunApplication extends Application {
 
   public void start(Stage primaryStage) {
     this.primaryStage = primaryStage;
+    Application.setUserAgentStylesheet(getClass().getResource("stylesheet.css").toExternalForm());
     primaryStage.setTitle(APP_TITLE);
     primaryStage.setScene(RunApplication.firstScene());
     primaryStage.show();
@@ -207,7 +208,7 @@ public class RunApplication extends Application {
     
     TextField txtFld = new TextField("  Enter the User you'd like to make the Central User");
 
-    Button newCntrlUsr = new Button("Add this central user");
+    Button newCntrlUsr = new Button("Set this user as the central user");
     newCntrlUsr.setOnAction(e -> {
       String user = txtFld.getText();
       controller.setCentralUser(user);
