@@ -377,7 +377,7 @@ public class RunApplication extends Application {
 
     // creates the button to finish the task of uploading the network file.
     Button upload = new Button("Upload File");
-    upload.setOnAction(e -> controller.importFile("null", primaryStage));
+    upload.setOnAction(e -> controller.importFile(address.getText(), primaryStage));
     upload.setTranslateX(WINDOW_WIDTH * 3 / 8);
 
     box.getChildren().addAll(instruc, address, upload);

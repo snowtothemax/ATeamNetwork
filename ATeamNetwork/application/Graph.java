@@ -223,18 +223,18 @@ public class Graph implements GraphADT {
     if (vertex1 == null || vertex2 == null) {
       return false;
     }
-
-    // if either edge does not exist in the graph already, they are added to the
-    // graph
-    // checks if vertex1 exists, and if not, it is added to the graph
-    if (!vertExist(vertex1)) {
-      return false;
-    }
-    // checks if vertex2 exists and if not, it is added to the graph
-    if (!vertExist(vertex2)) {
-      return false;
-    }
-
+    
+	// if either edge does not exist in the graph already, they are added to the
+	// graph
+	// checks if vertex1 exists, and if not, it is added to the graph
+	if (!vertExist(vertex1)) {
+		addVertex(vertex1);
+	}
+	// checks if vertex2 exists and if not, it is added to the graph
+	if (!vertExist(vertex2)) {
+		addVertex(vertex2);
+	}
+    
     // gets the node and AMINDEX for each vertex in the graph
     GraphNode<String> fromNode = findVertex(vertex1);// node where edge comes from
     GraphNode<String> toNode = findVertex(vertex2);// node where edge goes to
@@ -262,10 +262,6 @@ public class Graph implements GraphADT {
   public boolean removeEdge(String vertex1, String vertex2) {
     // checks if either input is null and ends if so
     if (vertex1 == null || vertex2 == null) {
-      return false;
-    }
-    // checks if either vertex doesn't exist in the graph and ends if so
-    if (!vertExist(vertex1) || !vertExist(vertex2)) {
       return false;
     }
 
