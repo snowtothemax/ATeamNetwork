@@ -19,209 +19,220 @@ import javafx.stage.Stage;
 
 public class Controller {
 
-	Graph userNetwork;
-	private String centralUser;
-	private File file;
+  Graph userNetwork;
+  private String centralUser;
+  private File file;
 
-	public Controller() {
-		userNetwork = new Graph();
-		this.file = new File("log.txt");
-		file.delete();
-		file = new File("log.txt");
-	}
+  public Controller() {
+    userNetwork = new Graph();
+    this.file = new File("log.txt");
+    file.delete();
+    file = new File("log.txt");
+  }
 
-	public Controller(String fileName) {
-		userNetwork = new Graph();
-		this.file = new File(fileName);
-	}
+  public Controller(String fileName) {
+    userNetwork = new Graph();
+    this.file = new File(fileName);
+  }
 
-	public void setCentralUser(String user) {
-		this.centralUser = user;
+  public void setCentralUser(String user) {
+    this.centralUser = user;
 
-		String str = "s " + user + "\n";
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-			writer.append(str);
-			writer.close();
-		} catch (IOException e) {
-			// ERROR
-		}
-		// TODO
-	}
+    String str = "s " + user + "\n";
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+      writer.append(str);
+      writer.close();
+    } catch (IOException e) {
+      // ERROR
+    }
+    // TODO
+  }
 
-	public String getCentralUser() {
-		return centralUser;
-	}
+  public String getCentralUser() {
+    return centralUser;
+  }
 
-	public void printCtrlNetwork(String user) {
-		List friends = userNetwork.getAdjacentVerticesOf(user);
-		RunApplication.primaryStage.setScene(RunApplication.Network(friends));
-	}
+  public void printCtrlNetwork(String user) {
+    
+    List friends = userNetwork.getAdjacentVerticesOf(user);
+    RunApplication.primaryStage.setScene(RunApplication.Network(friends));
+  }
 
-	public boolean addFriend(String user1, String user2) {
-		// Since the implemented graph is directed, an edge must be added both ways
-		boolean result = userNetwork.addEdge(user1, user2);
-		userNetwork.addEdge(user2, user1);
+  public boolean addFriend(String user1, String user2) {
+    // Since the implemented graph is directed, an edge must be added both ways
+    boolean result = userNetwork.addEdge(user1, user2);
+    if(this.centralUser == null) {
+      centralUser = user1;
+    }
+    
+    userNetwork.addEdge(user2, user1);
 
-		String str = "a " + user1 + " " + user2 + "\n";
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-			writer.append(str);
-			writer.close();
-		} catch (IOException e) {
-			// ERROR
-		}
+    String str = "a " + user1 + " " + user2 + "\n";
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+      writer.append(str);
+      writer.close();
+    } catch (IOException e) {
+      // ERROR
+    }
 
-		return result;
-	}
+    return result;
+  }
 
-	public boolean removeFriend(String user1, String user2) {
-		// Remove the undirected edge from between the two users.
+  public boolean removeFriend(String user1, String user2) {
+    // Remove the undirected edge from between the two users.
 
-		boolean result = userNetwork.removeEdge(user1, user2);
-		userNetwork.removeEdge(user2, user1);
+    boolean result = userNetwork.removeEdge(user1, user2);
+    userNetwork.removeEdge(user2, user1);
 
-		String str = "r " + user1 + " " + user2 + "\n";
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-			writer.append(str);
-			writer.close();
-		} catch (IOException e) {
-			// ERROR
-		}
+    String str = "r " + user1 + " " + user2 + "\n";
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+      writer.append(str);
+      writer.close();
+    } catch (IOException e) {
+      // ERROR
+    }
 
-		return result;
-	}
+    return result;
+  }
 
-	public void importFile(String filePath, Stage primaryStage) {
-		try {
-			Scanner readFile = new Scanner(new File(filePath));
-			ArrayList<String[]> listCommands = new ArrayList<String[]>();
-			while (readFile.hasNextLine()) {
-				String line = readFile.nextLine();
-				String[] commands = line.split(" ");
-				listCommands.add(commands);
-			}
-			readFile.close();
-			for (int i = 0; i < listCommands.size(); i++) {
-				String error = "ERROR: The input file was not formatted correctly. Look at line " + i
-						+ " of the input file.";
-				String[] command = listCommands.get(i);
-				if (command.length < 2 || command.length > 3) {
-					primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(), error));
-					break;
-				}
-				char check = command[0].charAt(0);
-				if (check == 'a') {
-					if (command.length == 3) {
-						addFriend(command[1], command[2]);
-					} else {
-						addUser(command[1]);
-					}
-				} else if (check == 'r') {
-					if (command.length == 3) {
-						removeFriend(command[1], command[2]);
-					} else {
-						RemoveUser(command[1]);
-					}
-				} else if (check == 's') {
-					setCentralUser(command[1]);
-				} else {
+  public void importFile(String filePath, Stage primaryStage) {
+    try {
+      Scanner readFile = new Scanner(new File(filePath));
+      ArrayList<String[]> listCommands = new ArrayList<String[]>();
+      while (readFile.hasNextLine()) {
+        String line = readFile.nextLine();
+        String[] commands = line.split(" ");
+        listCommands.add(commands);
+      }
+      readFile.close();
+      for (int i = 0; i < listCommands.size(); i++) {
+        String error = "ERROR: The input file was not formatted correctly. Look at line " + i
+            + " of the input file.";
+        String[] command = listCommands.get(i);
+        if (command.length < 2 || command.length > 3) {
+          primaryStage
+              .setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(), error));
+          break;
+        }
+        char check = command[0].charAt(0);
+        if (check == 'a') {
+          if (command.length == 3) {
+            addFriend(command[1], command[2]);
+          } else {
+            addUser(command[1]);
+          }
+        } else if (check == 'r') {
+          if (command.length == 3) {
+            removeFriend(command[1], command[2]);
+          } else {
+            RemoveUser(command[1]);
+          }
+        } else if (check == 's') {
+          setCentralUser(command[1]);
+        } else {
 
-				}
-			}
-		} catch (FileNotFoundException e) {
-			primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(),
-					"ERROR: The input file was not found"));
-			return;
-		}
-		primaryStage.setScene(
-				RunApplication.successMessage(RunApplication.uploadNetworkFile(), "SUCCESS: Network File Uploaded!"));
-		return;
-	}
+        }
+      }
+    } catch (FileNotFoundException e) {
+      primaryStage.setScene(RunApplication.errorMessage(RunApplication.uploadNetworkFile(),
+          "ERROR: The input file was not found"));
+      return;
+    }
+    primaryStage.setScene(RunApplication.successMessage(RunApplication.uploadNetworkFile(),
+        "SUCCESS: Network File Uploaded!"));
+    return;
+  }
 
-	/**
-	 * Export a JSON file that represents the network to a desired location on the
-	 * users computer
-	 * 
-	 * @return
-	 */
-	public void exportFile(String filePath) {
-		try {
-			filePath.replace("'\'", "\\");
-			Writer output = null;
-			File fileExport = new File(filePath);
-			output = new BufferedWriter(new FileWriter(fileExport));
+  /**
+   * Export a JSON file that represents the network to a desired location on the users computer
+   * 
+   * @return
+   */
+  public void exportFile(String filePath) {
+    try {
+      filePath.replace("'\'", "\\");
+      Writer output = null;
+      File fileExport = new File(filePath);
+      output = new BufferedWriter(new FileWriter(fileExport));
 
-			Scanner readFile = new Scanner(file);
-			while (readFile.hasNextLine()) {
-				String line = readFile.nextLine();
-				output.append(line + "\n");
-			}
-			output.close();
-			readFile.close();
-		} catch (Exception e) {
-			RunApplication.primaryStage
-					.setScene(RunApplication.errorMessage(RunApplication.ExportFile(), "ERROR: Could Not Write File."));
-		}
-		RunApplication.primaryStage
-				.setScene(RunApplication.successMessage(RunApplication.ExportFile(), "SUCCESS: File was written!"));
-	}
+      Scanner readFile = new Scanner(file);
+      while (readFile.hasNextLine()) {
+        String line = readFile.nextLine();
+        output.append(line + "\n");
+      }
+      output.close();
+      readFile.close();
+    } catch (Exception e) {
+      RunApplication.primaryStage.setScene(
+          RunApplication.errorMessage(RunApplication.ExportFile(), "ERROR: Could Not Write File."));
+    }
+    RunApplication.primaryStage.setScene(
+        RunApplication.successMessage(RunApplication.ExportFile(), "SUCCESS: File was written!"));
+  }
 
-	public boolean addUser(String name) {
+  public boolean addUser(String name) {
 
-		boolean result = userNetwork.addVertex(name);
+    boolean result = userNetwork.addVertex(name);
 
-		String str = "a " + name + "\n";
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-			writer.append(str);
-			writer.close();
-		} catch (IOException e) {
-			// ERROR
-		}
-		return result;
-	}
+    if(centralUser == null) {
+      centralUser = name;
+    }
+    
+    
+    String str = "a " + name + "\n";
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+      writer.append(str);
+      writer.close();
+    } catch (IOException e) {
+      // ERROR
+    }
+    return result;
+  }
 
-	public boolean RemoveUser(String name) {
 
-		boolean result = userNetwork.removeVertex(name);
+  public boolean RemoveUser(String name) {
 
-		String str = "r " + name + "\n";
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-			writer.append(str);
-			writer.close();
-		} catch (IOException e) {
-			// ERROR
-		}
-		return result;
-	}
+    boolean result = userNetwork.removeVertex(name);
 
-	List<String> getMutualFriends(String user1, String user2) {
+    String str = "r " + name + "\n";
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+      writer.append(str);
+      writer.close();
+    } catch (IOException e) {
+      // ERROR
+    }    
+    return result;
+  }
 
-		List<String> mutualFriends;
+  List<String> getMutualFriends(String user1, String user2) {
 
-		Set<String> allUsers = userNetwork.getAllVertices();
+    List<String> mutualFriends;
 
-		if (!allUsers.contains(user1) || !allUsers.contains(user2)) {
-			return null;
-		}
+    Set<String> allUsers = userNetwork.getAllVertices();
 
-		List<String> user1Friends = userNetwork.getAdjacentVerticesOf(user1);
-		List<String> user2Friends = userNetwork.getAdjacentVerticesOf(user2);
+    if (!allUsers.contains(user1) || !allUsers.contains(user2)) {
+      return null;
+    }
 
-		user1Friends.retainAll(user2Friends);
+    List<String> user1Friends = userNetwork.getAdjacentVerticesOf(user1);
+    List<String> user2Friends = userNetwork.getAdjacentVerticesOf(user2);
 
-		mutualFriends = user1Friends;
+    user1Friends.retainAll(user2Friends);
 
-		return mutualFriends;
-	}
+    mutualFriends = user1Friends;
 
-	public void clearNetwork() {
-		userNetwork = new Graph();
-		file.delete();
-	}
+    return mutualFriends;
+  }
+
+  public void clearNetwork() {
+    userNetwork = new Graph();
+    file.delete();
+  }
 
 
 }
