@@ -17,6 +17,19 @@ import application.Graph;
 import application.RunApplication;
 import javafx.stage.Stage;
 
+/**
+ * This class represents the current social network of the user.
+ * It stores the graph data structure of the network, the current central
+ * user, and the log file that can be exported by the user. This class
+ * contains methods to add and remove users from the network, add and
+ * remove friendships between users, etc. It is utilized by RunApplication
+ * to implement the user's actions in their social network.
+ *
+ * @author Megan de Joya (dejoya@wisc.edu), Abhinav Kaushik (akaushik4@wisc.edu),
+ *         Max Johnson (mkjohnson9@wisc.edu), Yuhan Dai (dai45@wisc.edu)
+ *
+ */
+
 public class Controller {
 
   Graph userNetwork;
@@ -54,7 +67,7 @@ public class Controller {
   }
 
   public void printCtrlNetwork(String user) {
-    
+
     List friends = userNetwork.getAdjacentVerticesOf(user);
     RunApplication.primaryStage.setScene(RunApplication.Network(friends));
   }
@@ -65,7 +78,7 @@ public class Controller {
     if(this.centralUser == null) {
       centralUser = user1;
     }
-    
+
     userNetwork.addEdge(user2, user1);
 
     String str = "a " + user1 + " " + user2 + "\n";
@@ -148,7 +161,7 @@ public class Controller {
 
   /**
    * Export a JSON file that represents the network to a desired location on the users computer
-   * 
+   *
    * @return
    */
   public void exportFile(String filePath) {
@@ -180,8 +193,8 @@ public class Controller {
     if(centralUser == null) {
       centralUser = name;
     }
-    
-    
+
+
     String str = "a " + name + "\n";
     try {
       BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
@@ -205,7 +218,7 @@ public class Controller {
       writer.close();
     } catch (IOException e) {
       // ERROR
-    }    
+    }
     return result;
   }
 

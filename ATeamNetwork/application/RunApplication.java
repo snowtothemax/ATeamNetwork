@@ -254,17 +254,17 @@ public class RunApplication extends Application {
         }
 
         ArrayList<String> finalUsers = new ArrayList<String>();
-        
-        Set<String> setOfUsers =controller.userNetwork.getAllVertices();    
-        
+
+        Set<String> setOfUsers =controller.userNetwork.getAllVertices();
+
         finalUsers.addAll(setOfUsers);
-        
+
         Button newCntrlUsr = new Button("Set Central User");
         newCntrlUsr.setOnAction(e -> {
             String user = txtFld.getText();
             if(checktestBoxes(user))
               if(finalUsers.contains(user))
-            controller.setCentralUser(user); 
+            controller.setCentralUser(user);
               else primaryStage.setScene(errorMessage(RunApplication.firstScene(), "Error! Enter a valid user"));
             else
               primaryStage.setScene(errorMessage(RunApplication.firstScene(), "Error! Something must be inserted in the text box"));
@@ -272,10 +272,10 @@ public class RunApplication extends Application {
 
         Button display = new Button("Display Network");
         display.setOnAction(e -> {
-            
-       
-              
-              
+
+
+
+
             String user = txtFld.getText();
             if(checktestBoxes(user))
               if(finalUsers.contains(user))
@@ -419,11 +419,11 @@ public class RunApplication extends Application {
             else
                 primaryStage.setScene(errorMessage(addUser(), "Error! Couldn't add user:" + "\"" + user + "\""));
         });
-        
+
         String centralUser = controller.getCentralUser();
-        
+
         System.out.print(centralUser);
-        
+
         Button remove = new Button("Remove");
         remove.setOnAction(e -> {
             String user = txt.getText();
@@ -697,11 +697,9 @@ public class RunApplication extends Application {
             return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         }
 
-        primaryStage.setTitle(APP_TITLE);
-
-        BorderPane root = new BorderPane();
-
-        ObservableList<String> allUsers = FXCollections.observableArrayList(users);
+		if (users.size() == 0) {
+			return errorMessage(firstScene(), "Oops! Looks like there are no users present in the network.");
+		}
 
         ListView<String> listView = new ListView<String>(allUsers);
 
@@ -711,6 +709,33 @@ public class RunApplication extends Application {
 
         return new Scene(root, WINDOW_WIDTH * 2 / 3, WINDOW_HEIGHT);
 
-    }
+		ListView<String> listView = new ListView<String>(allUsers);
+		listView.setTranslateX(WINDOW_WIDTH / 2);
+		listView.setStyle("-fx-text-fill: black; " + "-fx-font-size: 25; ");
+
+		listView.setItems(allUsers);
+		root.setCenter(listView);
+		root.setBottom(back);
+
+		root.setStyle("-fx-background-color: white; ");
+		listView.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				String user = (String) listView.getSelectionModel().getSelectedItem(); // selected user
+				if (event.getButton() == MouseButton.PRIMARY) { // left click
+
+					controller.setCentralUser(user);
+					controller.printCtrlNetwork(user);
+				} else if (event.getButton() == MouseButton.SECONDARY) { // right click
+					controller.RemoveUser(user);
+					primaryStage.setScene(displayAllUsers());
+				}
+			}
+
+		});
+
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	}
 
 }
