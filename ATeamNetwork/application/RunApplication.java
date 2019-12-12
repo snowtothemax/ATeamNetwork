@@ -31,30 +31,53 @@ public class RunApplication extends Application {
 	private List<String> args;
 
 	/** instance fields */
-	//window width and height
+	// window width and height
 	private static int WINDOW_WIDTH = 600;
 	private static final int WINDOW_HEIGHT = 700;
-	//First scene app title
+	// First scene app title
 	static String APP_TITLE = "Welcome!";
-	static Stage primaryStage; //the primare stage
-	static Controller controller = new Controller();//the main controller
+	static Stage primaryStage; // the primare stage
+	static Controller controller = new Controller();// the main controller
 
+	/**
+	 * Launches the application
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+	/**
+	 * Initializes the application
+	 */
 	public void start(Stage primaryStage) {
+		// sets the primarystage to the input primary stage
 		this.primaryStage = primaryStage;
+
+		// sets the style of the application through the input style sheet
 		Application.setUserAgentStylesheet(getClass().getResource("stylesheet.css").toExternalForm());
+
+		// sets the title of the application
 		primaryStage.setTitle(APP_TITLE);
+
+		// sets the scene to the first scene and starts the application
 		primaryStage.setScene(RunApplication.firstScene());
 		primaryStage.show();
 	}
 
+	/**
+	 * Shows the first screen of the application with buttons that lead to different
+	 * scenes that do other functions.
+	 * 
+	 * @return Scene - The first Scene
+	 */
 	static Scene firstScene() {
+		// New title of the application
 		APP_TITLE = "Welcome to the Social Network";
-
 		primaryStage.setTitle(APP_TITLE);
+
+		// creates a new borderpane for the scene
 		BorderPane root = new BorderPane();
 
 		// Horizontal box to be but at the top of the application
@@ -65,8 +88,11 @@ public class RunApplication extends Application {
 		// User Options
 		Button ctrlUsrOp = new Button("Central User Options");
 
+		// button to display all users in the current network
 		Button displayAll = new Button("Display All Users");
 
+		// adds the correct functions for each button, calling on their respective
+		// scenes
 		displayAll.setOnAction(e -> primaryStage.setScene(RunApplication.displayAllUsers()));
 		ctrlUsrOp.setOnAction(e -> primaryStage.setScene(RunApplication.centralUserOptions()));
 
@@ -140,12 +166,17 @@ public class RunApplication extends Application {
 
 		// Buttons to be added to the HBox "bottom"
 		Button addFriend = new Button("Add Friendship");
-		addFriend.setOnAction(e -> {
 
+		// sets the action of the addFriend button
+		addFriend.setOnAction(e -> {
+			// gets the text from the two text fields
 			String u1 = user1.getText();
 			String u2 = user2.getText();
+			// checks if the friendship was added between user1 and user2
 			if (checktestBoxes(u1, u2))
+
 				if (controller.addFriend(u1, u2))
+
 					primaryStage.setScene(successMessage(RunApplication.firstScene(),
 							"Successfully added friendship between " + u1 + " and " + u2));
 				else
@@ -154,10 +185,16 @@ public class RunApplication extends Application {
 			else
 				errorMessage(RunApplication.firstScene(), "Error! Something must be inserted in both the text boxes");
 		});
+
+		// button to the remove friendship from two users in the textfield.
 		Button removeFriend = new Button("Remove Friendship");
+		// the action of the removeFriend button
 		removeFriend.setOnAction(e -> {
+			// gets the input from the two textFields
 			String u1 = user1.getText();
 			String u2 = user2.getText();
+
+			// checks if the friendship was added between user1 and user2
 			if (checktestBoxes(u1, u2))
 				if (controller.removeFriend(u1, u2))
 					primaryStage.setScene(successMessage(RunApplication.firstScene(),
@@ -170,10 +207,13 @@ public class RunApplication extends Application {
 						"Error! Something must be inserted in both the text boxes"));
 		});
 
+		// Button to view the mutual friends of the two users in the text field
 		Button mutualButton = new Button("Get Mutual Friends");
 		mutualButton.setOnAction(e -> {
+			// gets input of the two textfields
 			String u1 = user1.getText();
 			String u2 = user2.getText();
+			// checks if the boxes had text with users that exist
 			if (checktestBoxes(u1, u2))
 				primaryStage.setScene(displayMutualFriends(controller.getMutualFriends(u1, u2), u1, u2));
 			else
@@ -181,6 +221,7 @@ public class RunApplication extends Application {
 						"Error! Something must be inserted in both the text boxes"));
 		});
 
+		// Button to clear the network
 		Button clearNetwork = new Button("Clear Network");
 		clearNetwork.setOnAction(e -> {
 			controller = new Controller();
@@ -188,12 +229,9 @@ public class RunApplication extends Application {
 		});
 
 		// Positions the bottom buttons correctly onto the scene
-		addFriend.setTranslateX(WINDOW_WIDTH / 3);// Sets the addFriend button to the center of the
-													// screen
-		removeFriend.setTranslateX(WINDOW_WIDTH / 3); // sets the removeFriend button below the
-														// addFriend button
+		addFriend.setTranslateX(WINDOW_WIDTH / 3);
+		removeFriend.setTranslateX(WINDOW_WIDTH / 3);
 		mutualButton.setTranslateX(WINDOW_WIDTH / 3);
-
 		clearNetwork.setTranslateX(WINDOW_WIDTH / 3);
 		// adds the buttons to the HBox bottom.
 		bottom.getChildren().addAll(addFriend, removeFriend, mutualButton, clearNetwork);
@@ -207,6 +245,7 @@ public class RunApplication extends Application {
 		// Set the main scene and show it on the window
 		Scene scene1 = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+		// returns the scene
 		return scene1;
 	}
 
@@ -216,40 +255,54 @@ public class RunApplication extends Application {
 	 * @return Scene - The scene for Central User Options
 	 */
 	static Scene centralUserOptions() {
-
+		// sets the title of this new scene
 		APP_TITLE = "Welcome to Central User Options!";
 		primaryStage.setTitle(APP_TITLE);
+
+		// creates a new pane to be the basis of the scene
 		BorderPane root = new BorderPane();
 
+		// text field for the user of the program to input as the central user
 		TextField txtFld = new TextField(" Enter the User you'd like to make the Central User");
 
+		// list of all users in the network
 		ObservableList<String> users = FXCollections.observableArrayList(controller.userNetwork.getAllVertices());
 
+		// checks if there are no users in the graph
 		if (users.size() == 0) {
-			return errorMessage(centralUserOptions(), "ERROR: The Social Network doesn't have any users. Please add users to contiue");
+			return errorMessage(centralUserOptions(),
+					"ERROR: The Social Network doesn't have any users. Please add users to contiue");
 		}
 
+		// removes the central user from the list then prints an error stating that the
+		// central user is the only one in the network
 		users.remove(controller.getCentralUser());
-
 		if (users.size() == 0) {
-			return errorMessage(centralUserOptions(), "ERROR: The Social Network has only one user which is the Central User");
+			return errorMessage(centralUserOptions(),
+					"ERROR: The Social Network has only one user which is the Central User");
 		}
 
+		// Button to set the new central user
 		Button newCntrlUsr = new Button("Add Central User");
 		newCntrlUsr.setOnAction(e -> {
+			// gets the text from the text field
 			String user = txtFld.getText();
+			// sets the central user
 			controller.setCentralUser(user);
-			if(controller.userNetwork.addVertex(user)) {
+			// checks if the input user exists in the graph or not already
+			if (controller.userNetwork.addVertex(user)) {
 				primaryStage.setScene(errorMessage(centralUserOptions(), "ERROR: input user does not exist."));
 				controller.userNetwork.removeVertex(user);
-			}else {
-			primaryStage.setScene(
-					successMessage(centralUserOptions(), "SUCCESS: " + user + " was set as the central user."));
+			} else {
+				primaryStage.setScene(
+						successMessage(centralUserOptions(), "SUCCESS: " + user + " was set as the central user."));
 			}
 		});
-		
+
+		// Button that displays the network from the central user
 		Button display = new Button("Display Network");
 		display.setOnAction(e -> {
+			// checks if the central user is null or not and prints the scene if not
 			if (controller.getCentralUser() != null) {
 				controller.printCtrlNetwork(controller.getCentralUser());
 			} else {
@@ -258,9 +311,12 @@ public class RunApplication extends Application {
 			}
 		});
 
+		// creates a new HBOX that organizes all the previously inserted nodes
 		HBox top = new HBox();
-		top.setPrefHeight(WINDOW_HEIGHT / 2);
+		top.setPrefHeight(WINDOW_HEIGHT / 2);// sets the height of the box
 
+		// Positions all previously inserted nodes into their respective positions in
+		// the scene
 		txtFld.setTranslateX(WINDOW_WIDTH * 3 / 8 - 75);
 		txtFld.setTranslateY(WINDOW_HEIGHT / 4);
 		txtFld.setPrefWidth(WINDOW_WIDTH / 2);
@@ -269,54 +325,71 @@ public class RunApplication extends Application {
 		display.setTranslateX(WINDOW_WIDTH / 8 - 310);
 		display.setTranslateY(WINDOW_HEIGHT / 4 + 80);
 
+		// adds all the nodes to the HBox top and sets it as the root Panes top
 		top.getChildren().addAll(txtFld, newCntrlUsr, display);
 		root.setTop(top);
 
+		// creates a HBOX for the bottom that will contain a back button
 		HBox bottom = new HBox();
 		bottom.setPrefHeight(WINDOW_HEIGHT / 2);
 
+		// A back button that will allow the user to return to the first scene
 		Button back = new Button("Back");
 		back.setTranslateX(WINDOW_WIDTH / 3);
 		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
-
 		root.setBottom(back);
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
+	/**
+	 * The scene that allows the user to export the log file created from the
+	 * network (Saves the network to a desired location).
+	 * 
+	 * @return Scene - the scene to export a file.
+	 */
 	static Scene ExportFile() {
-
+		// sets the title of the scene
 		APP_TITLE = "Welcome to Export File!";
 		primaryStage.setTitle(APP_TITLE);
+
+		// The button that exports the file
 		Button exp = new Button("Export to File");
 
+		// the textField inputs the path of the file to export to
 		TextField txt = new TextField(
 				"Enter the exact path of the file you'd like to export to (Please insert a valid location for Windows Users).");
 
+		// the new root borderPane of the scene
 		BorderPane root = new BorderPane();
 
+		// HBox to add the export button and the txt field
 		HBox h = new HBox();
-		h.setPrefHeight(WINDOW_HEIGHT / 2);
 
+		// sets the positions of the two previous nodes
+		h.setPrefHeight(WINDOW_HEIGHT / 2);
 		txt.setPrefWidth(450);
 		txt.setTranslateX(WINDOW_WIDTH / 2 - 225);
 		txt.setTranslateY(WINDOW_HEIGHT / 2 - 30);
-
 		exp.setTranslateY(WINDOW_HEIGHT / 2);
 		exp.setTranslateX(WINDOW_WIDTH / 8 - 300);
-
 		h.getChildren().addAll(txt, exp);
 
+		// sets the top of the scene to the Hbox h
 		root.setTop(h);
 
+		// adds functionality to the button to export files and calls on the controller
 		exp.setOnAction(e -> controller.exportFile(txt.getText()));
 
+		// the return button of the scene that returns to the first scene
 		Button back = new Button("Back");
+		// sets the position of the back button
 		back.setTranslateX(WINDOW_WIDTH / 3 - 20);
+		// sets the action of the back button to return to the first scene
 		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
-
 		root.setBottom(back);
 
+		// returns the new scene
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
@@ -557,16 +630,28 @@ public class RunApplication extends Application {
 
 	}
 
+	/**
+	 * Method that checks if the text boxes are empty or not
+	 * 
+	 * @param txt1 - input from the first box.
+	 * @param txt2 - input from the second box.
+	 * @return boolean - If input for boxes is valid, return true. Else return
+	 *         false.
+	 */
 	static boolean checktestBoxes(String txt1, String txt2) {
 
+		// trims the first input
 		txt1 = txt1.trim();
 
+		// checks if the input is valid
 		if (txt1 == null || txt1.equals("") || txt1.isBlank() || txt1.isEmpty()) {
 			return false;
 		}
 
+		// trims the second input
 		txt2 = txt2.trim();
 
+		// checks if the second input is valid
 		if (txt2 == null || txt2.equals("") || txt2.isBlank() || txt2.isEmpty()) {
 			return false;
 		}
@@ -574,24 +659,46 @@ public class RunApplication extends Application {
 		return true;
 	}
 
+	/**
+	 * Checks if the textField input for one singular box is valid or not
+	 * 
+	 * @param txt1 - the input of the text field
+	 * @return boolean - true if the input is vaild, false otherwise.
+	 */
 	static boolean checktestBoxes(String txt1) {
-
+		// trims the input
 		txt1 = txt1.trim();
 
+		// checks if the text is valid input
 		if (txt1 == null || txt1.equals("") || txt1.isBlank() || txt1.isEmpty()) {
 			return false;
 		}
 		return true;
 	}
 
+	/**
+	 * Returns a scene for any given error.
+	 * 
+	 * @param currScene - The scene to return to after the error is displayed.
+	 * @param message   - The error message displayed.
+	 * @return Scene - an error message scene.
+	 */
 	static Scene errorMessage(Scene currScene, String message) {
+		// Sets the new title of the program window
 		APP_TITLE = "ERROR!";
 		primaryStage.setTitle(APP_TITLE);
+
+		// the back button of the scene that returns to the input scene.
 		Button back = new Button("Back");
 		back.setOnAction(e -> primaryStage.setScene(currScene));
+
+		// the BorderPane of the scene
 		BorderPane root = new BorderPane();
+
+		// The Hbox that holds the error message
 		HBox box = new HBox();
 		Label errorMessage = new Label(message);
+		// Adds all components to the scene in their respective ordering.
 		box.getChildren().add(errorMessage);
 		root.setCenter(box);
 		root.setBottom(back);
@@ -603,14 +710,29 @@ public class RunApplication extends Application {
 
 	}
 
+	/**
+	 * A success message scene for any successful action
+	 * 
+	 * @param currScene - the scene to return to.
+	 * @param message   - The displayed error message.
+	 * @return Scene - a success message scene
+	 */
 	static Scene successMessage(Scene currScene, String message) {
+		// Sets the new title of the program window
 		APP_TITLE = "SUCCESS!";
 		primaryStage.setTitle(APP_TITLE);
+
+		// the back button of the scene that returns to the input scene.
 		Button back = new Button("Back");
 		back.setOnAction(e -> primaryStage.setScene(currScene));
+
+		// the BorderPane of the scene
 		BorderPane root = new BorderPane();
+
+		// The Hbox that holds the error message
 		HBox box = new HBox();
 		Label errorMessage = new Label(message);
+		// Adds all components to the scene in their respective ordering.
 		box.getChildren().add(errorMessage);
 		root.setCenter(box);
 		root.setBottom(back);
@@ -621,49 +743,65 @@ public class RunApplication extends Application {
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
+	/**
+	 * Scene that displays all users in the network.
+	 * 
+	 * @return Scene - scene that displays all users.
+	 */
 	static Scene displayAllUsers() {
 
+		// sets the title
 		APP_TITLE = "All users";
 
+		// Creates a button to return to the first scene
 		Button back = new Button("Back");
 		back.setOnAction(e -> primaryStage.setScene(RunApplication.firstScene()));
 		back.setTranslateX(WINDOW_WIDTH / 2);
 
+		// the array list of users present in the current network.
 		ArrayList<String> users = new ArrayList<String>();
-
 		users.addAll(controller.userNetwork.getAllVertices());
 
-		if (users == null) {
-			return errorMessage(RunApplication.firstScene(), "Nothing to Display");
-		}
-
+		// checks if there are no users in the network or not
 		if (users.size() == 0) {
 			return errorMessage(firstScene(), "Oops! Looks like there are no users present in the network.");
 		}
 
+		// sets the title of the scene
 		primaryStage.setTitle(APP_TITLE);
 
+		// constructs a new borderPane for the scene.
 		BorderPane root = new BorderPane();
 
+		// an observable list of all users in the users in the network that is then put
+		// into a listView Node.
 		ObservableList<String> allUsers = FXCollections.observableArrayList(users);
-
 		ListView<String> listView = new ListView<String>(allUsers);
 		listView.setTranslateX(WINDOW_WIDTH / 2);
 		listView.setStyle("-fx-text-fill: black; " + "-fx-font-size: 25; ");
 
+		// Adds all the items to the listView and adds them to the scene in their
+		// respective positions.
 		listView.setItems(allUsers);
 		root.setCenter(listView);
 		root.setBottom(back);
-
 		root.setStyle("-fx-background-color: white; ");
+
+		// an action that allows the user to left click and make the clicked user the
+		// central user and display their network. A right click on the user removes
+		// them from the network.
 		listView.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				//sets the selected user equal to the clicked on user
 				String user = (String) listView.getSelectionModel().getSelectedItem(); // selected user
+				//if it is a left click, the user is set as the central user.
 				if (event.getButton() == MouseButton.PRIMARY) { // left click
 
 					controller.setCentralUser(user);
 					controller.printCtrlNetwork(user);
+				
+				//if it is a right click, the user is removed
 				} else if (event.getButton() == MouseButton.SECONDARY) { // right click
 					controller.removeUser(user);
 					primaryStage.setScene(displayAllUsers());
